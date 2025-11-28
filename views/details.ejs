@@ -50,6 +50,7 @@
                 <div class="fare-card">
                     <h4 class="font-bold text-lg">Economy Light</h4>
                     <p class="text-2xl font-bold my-2"><%= flight.price.economy %> MAD</p>
+                    <p class="text-green-500 font-semibold mb-4"><i class="fas fa-leaf"></i> +<%= Math.round((flight.greenPoints || 100) * 1) %> Points</p>
                     <div class="text-left space-y-3">
                         <p><i class="fas fa-times-circle text-red-500"></i> Modification not allowed</p>
                         <p><i class="fas fa-times-circle text-red-500"></i> Refund not allowed</p>
@@ -57,6 +58,7 @@
                     </div>
                     <form action="/<%= flight._id %>/book" method="POST" class="mt-auto pt-4">
                         <input type="hidden" name="seatClass" value="economy">
+                        <input type="hidden" name="pointsMultiplier" value="1">
                         <button type="submit" class="select-button">Select</button>
                     </form>
                 </div>
@@ -64,6 +66,7 @@
                 <div class="fare-card">
                     <h4 class="font-bold text-lg">Economy Classic</h4>
                     <p class="text-2xl font-bold my-2"><%= (flight.price.economy + 500) %> MAD</p>
+                    <p class="text-green-500 font-semibold mb-4"><i class="fas fa-leaf"></i> +<%= Math.round((flight.greenPoints || 100) * 1) %> Points</p>
                     <div class="text-left space-y-3">
                         <p><i class="fas fa-check-circle text-green-500"></i> Modification for a fee</p>
                         <p><i class="fas fa-times-circle text-red-500"></i> Refund not allowed</p>
@@ -72,6 +75,7 @@
                     </div>
                     <form action="/<%= flight._id %>/book" method="POST" class="mt-auto pt-4">
                         <input type="hidden" name="seatClass" value="economy">
+                        <input type="hidden" name="pointsMultiplier" value="1">
                         <button type="submit" class="select-button">Select</button>
                     </form>
                 </div>
@@ -80,6 +84,7 @@
                     <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-yellow-400 text-sm font-bold px-3 py-1 rounded-full">Recommended</div>
                     <h4 class="font-bold text-lg">Economy Green</h4>
                     <p class="text-2xl font-bold my-2"><%= (flight.price.economy + 800) %> MAD</p>
+                    <p class="text-green-500 font-semibold mb-4"><i class="fas fa-leaf"></i> +<%= Math.round((flight.greenPoints || 100) * 1.2) %> Points</p>
                     <div class="text-left space-y-3">
                         <p><i class="fas fa-check-circle text-green-500"></i> Free modification</p>
                         <p><i class="fas fa-times-circle text-red-500"></i> Refund not allowed</p>
@@ -88,6 +93,7 @@
                     </div>
                     <form action="/<%= flight._id %>/book" method="POST" class="mt-auto pt-4">
                         <input type="hidden" name="seatClass" value="economy">
+                        <input type="hidden" name="pointsMultiplier" value="1.2">
                         <button type="submit" class="select-button">Select</button>
                     </form>
                 </div>
@@ -95,6 +101,7 @@
                 <div class="fare-card">
                     <h4 class="font-bold text-lg">Economy Flex</h4>
                     <p class="text-2xl font-bold my-2"><%= (flight.price.economy + 1200) %> MAD</p>
+                    <p class="text-green-500 font-semibold mb-4"><i class="fas fa-leaf"></i> +<%= Math.round((flight.greenPoints || 100) * 1) %> Points</p>
                      <div class="text-left space-y-3">
                         <p><i class="fas fa-check-circle text-green-500"></i> Free modification</p>
                         <p><i class="fas fa-check-circle text-green-500"></i> Refundable (fee applies)</p>
@@ -103,6 +110,7 @@
                     </div>
                      <form action="/<%= flight._id %>/book" method="POST" class="mt-auto pt-4">
                         <input type="hidden" name="seatClass" value="economy">
+                        <input type="hidden" name="pointsMultiplier" value="1">
                         <button type="submit" class="select-button">Select</button>
                     </form>
                 </div>
@@ -116,6 +124,7 @@
                 <div class="fare-card">
                     <h4 class="font-bold text-lg">Business Saver</h4>
                     <p class="text-2xl font-bold my-2"><%= flight.price.business %> MAD</p>
+                    <p class="text-green-500 font-semibold mb-4"><i class="fas fa-leaf"></i> +<%= Math.round((flight.greenPoints || 100) * 1.5) %> Points</p>
                     <div class="text-left space-y-3">
                         <p><i class="fas fa-times-circle text-red-500"></i> Modification not allowed</p>
                         <p><i class="fas fa-times-circle text-red-500"></i> Refund not allowed</p>
@@ -126,6 +135,7 @@
                     </div>
                     <form action="/<%= flight._id %>/book" method="POST" class="mt-auto pt-4">
                         <input type="hidden" name="seatClass" value="business">
+                        <input type="hidden" name="pointsMultiplier" value="1.5">
                         <button type="submit" class="select-button">Select</button>
                     </form>
                 </div>
@@ -135,6 +145,7 @@
                     <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-yellow-400 text-sm font-bold px-3 py-1 rounded-full">Recommended</div>
                     <h4 class="font-bold text-lg">Business Green</h4>
                     <p class="text-2xl font-bold my-2"><%= (flight.price.business + 2000) %> MAD</p>
+                    <p class="text-green-500 font-semibold mb-4"><i class="fas fa-leaf"></i> +<%= Math.round((flight.greenPoints || 100) * 1.8) %> Points</p>
                     <div class="text-left space-y-3">
                         <p><i class="fas fa-check-circle text-green-500"></i> Free modification</p>
                         <p><i class="fas fa-times-circle text-red-500"></i> Refund not allowed</p>
@@ -146,6 +157,7 @@
                     </div>
                     <form action="/<%= flight._id %>/book" method="POST" class="mt-auto pt-4">
                         <input type="hidden" name="seatClass" value="business">
+                        <input type="hidden" name="pointsMultiplier" value="1.8">
                         <button type="submit" class="select-button">Select</button>
                     </form>
                 </div>
@@ -154,6 +166,7 @@
                 <div class="fare-card">
                     <h4 class="font-bold text-lg">Business Flex</h4>
                     <p class="text-2xl font-bold my-2"><%= (flight.price.business + 5000) %> MAD</p>
+                    <p class="text-green-500 font-semibold mb-4"><i class="fas fa-leaf"></i> +<%= Math.round((flight.greenPoints || 100) * 1.5) %> Points</p>
                     <div class="text-left space-y-3">
                         <p><i class="fas fa-check-circle text-green-500"></i> Free modification</p>
                         <p><i class="fas fa-check-circle text-green-500"></i> Refundable</p>
@@ -165,6 +178,7 @@
                     </div>
                     <form action="/<%= flight._id %>/book" method="POST" class="mt-auto pt-4">
                         <input type="hidden" name="seatClass" value="business">
+                        <input type="hidden" name="pointsMultiplier" value="1.5">
                         <button type="submit" class="select-button">Select</button>
                     </form>
                 </div>

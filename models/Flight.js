@@ -13,6 +13,10 @@ const flightSchema = new mongoose.Schema({
     business: Number
   },
   carbon_emissions: Number, // Represents the ecological aspect
+  greenPoints: { // Added greenPoints field
+    type: Number,
+    default: 100 // Default value if not specified
+  }
 });
 
 module.exports = mongoose.model('Flight', flightSchema);

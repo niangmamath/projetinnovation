@@ -52,38 +52,40 @@ exports.getFlightDetails = async (req, res) => {
 exports.bookFlight = async (req, res) => {
   // 1. Check if user is logged in
   if (!req.session.userId) {
-    // Redirect to login if not logged in, with a message
-    // (You can add flash messages for a better UX)
     return res.redirect('/users/login');
   }
 
   try {
-    // 2. Verify the user exists in the database
+    // 2. Verify the user and flight exist
     const user = await User.findById(req.session.userId);
-    if (!user) {
-      // If user in session doesn't exist in DB, clear session and redirect
-      req.session.destroy();
-      return res.redirect('/users/login');
+    const flight = await Flight.findById(req.params.id);
+
+    if (!user || !flight) {
+        // If user or flight is not found, handle appropriately
+        req.session.destroy(); // Security measure
+        return res.redirect('/users/login');
     }
 
-    const flightId = req.params.id;
-    const { seatClass } = req.body;
+    const { seatClass, pointsMultiplier } = req.body;
 
     if (!seatClass || !['economy', 'business'].includes(seatClass)) {
       return res.status(400).send('Invalid class selection.');
     }
 
     const newBooking = new Booking({
-      user: user._id, // Use the verified user's ID
-      flight: flightId,
-      seatClass: seatClass 
+      user: user._id,
+      flight: flight._id,
+      seatClass: seatClass
     });
     await newBooking.save();
 
-    // 3. Award Green Points and Update Badge on the verified user object
-    user.greenPoints += 100; 
-    updateUserBadge(user);   
-    await user.save();       
+    // 3. Award Green Points based on multiplier and update badge
+    const multiplier = parseFloat(pointsMultiplier) || 1;
+    const pointsToAward = Math.round(flight.greenPoints * multiplier);
+    
+    user.greenPoints += pointsToAward;
+    updateUserBadge(user);
+    await user.save();
 
     res.redirect('/users/dashboard');
 
