@@ -1,22 +1,22 @@
 <%- include('partials/header') %>
 
 <div class="bg-white shadow-md rounded-lg p-8 max-w-4xl mx-auto">
-  <h2 class="text-3xl font-bold mb-6 text-center">Welcome to your Dashboard, <%= user.username %>!</h2>
+  <h2 class="text-3xl font-bold mb-6 text-center">Bienvenue sur votre tableau de bord, <%= user.username %>!</h2>
 
-  <%# Modern RAM Green Champions Section %>
+  <%# Section Champions Écologiques RAM %>
   <% 
     const badges = {
-      Bronze: { threshold: 0, icon: '#cd7f32', next: 'Silver', textColor: 'text-yellow-800' },
-      Silver: { threshold: 500, icon: '#c0c0c0', next: 'Gold', textColor: 'text-gray-500' },
-      Gold: { threshold: 1500, icon: '#ffd700', next: 'Platinum', textColor: 'text-yellow-500' },
-      Platinum: { threshold: 3000, icon: '#6EE7B7', next: null, textColor: 'text-emerald-400' }
+      Bronze: { threshold: 0, icon: '#cd7f32', next: 'Argent', textColor: 'text-yellow-800' },
+      Argent: { threshold: 500, icon: '#c0c0c0', next: 'Or', textColor: 'text-gray-500' },
+      Or: { threshold: 1500, icon: '#ffd700', next: 'Platine', textColor: 'text-yellow-500' },
+      Platine: { threshold: 3000, icon: '#6EE7B7', next: null, textColor: 'text-emerald-400' }
     };
     
     const badgeIcons = {
       Bronze: `<svg class="h-24 w-24 text-yellow-800" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2.5a.75.75 0 00-.75.75v1.51a1 1 0 01-1.28.963L4.6 4.354a.75.75 0 00-.963 1.28l1.36 3.374a1 1 0 01-.964 1.28H2.75a.75.75 0 000 1.5h1.253a1 1 0 01.964 1.28L3.64 16.37a.75.75 0 00.963 1.28l3.373-1.36a1 1 0 011.28.963V18.25a.75.75 0 001.5 0v-1.51a1 1 0 011.28-.963l3.373 1.36a.75.75 0 00.963-1.28l-1.36-3.374a1 1 0 01.964-1.28H17.25a.75.75 0 000-1.5h-1.253a1 1 0 01-.964-1.28l1.36-3.374a.75.75 0 00-.963-1.28l-3.373 1.36a1 1 0 01-1.28-.963V3.25a.75.75 0 00-.75-.75zm0 2.5a1 1 0 011 1v1.51a2.5 2.5 0 003.2 2.4l3.374 1.36-1.36 3.374a2.5 2.5 0 00-3.2 2.4V16a1 1 0 11-2 0v-1.51a2.5 2.5 0 00-3.2-2.4L3.25 8.716l1.36-3.374a2.5 2.5 0 003.2-2.4V6a1 1 0 011-1z" clip-rule="evenodd" /></svg>`,
-      Silver: `<svg class="h-24 w-24 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2.5a.75.75 0 00-.75.75v1.51a1 1 0 01-1.28.963L4.6 4.354a.75.75 0 00-.963 1.28l1.36 3.374a1 1 0 01-.964 1.28H2.75a.75.75 0 000 1.5h1.253a1 1 0 01.964 1.28L3.64 16.37a.75.75 0 00.963 1.28l3.373-1.36a1 1 0 011.28.963V18.25a.75.75 0 001.5 0v-1.51a1 1 0 011.28-.963l3.373 1.36a.75.75 0 00.963-1.28l-1.36-3.374a1 1 0 01.964-1.28H17.25a.75.75 0 000-1.5h-1.253a1 1 0 01-.964-1.28l1.36-3.374a.75.75 0 00-.963-1.28l-3.373 1.36a1 1 0 01-1.28-.963V3.25a.75.75 0 00-.75-.75zm0 2.5a1 1 0 011 1v1.51a2.5 2.5 0 003.2 2.4l3.374 1.36-1.36 3.374a2.5 2.5 0 00-3.2 2.4V16a1 1 0 11-2 0v-1.51a2.5 2.5 0 00-3.2-2.4L3.25 8.716l1.36-3.374a2.5 2.5 0 003.2-2.4V6a1 1 0 011-1z" clip-rule="evenodd" /></svg>`,
-      Gold: `<svg class="h-24 w-24 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2.5a.75.75 0 00-.75.75v1.51a1 1 0 01-1.28.963L4.6 4.354a.75.75 0 00-.963 1.28l1.36 3.374a1 1 0 01-.964 1.28H2.75a.75.75 0 000 1.5h1.253a1 1 0 01.964 1.28L3.64 16.37a.75.75 0 00.963 1.28l3.373-1.36a1 1 0 011.28.963V18.25a.75.75 0 001.5 0v-1.51a1 1 0 011.28-.963l3.373 1.36a.75.75 0 00.963-1.28l-1.36-3.374a1 1 0 01.964-1.28H17.25a.75.75 0 000-1.5h-1.253a1 1 0 01-.964-1.28l1.36-3.374a.75.75 0 00-.963-1.28l-3.373 1.36a1 1 0 01-1.28-.963V3.25a.75.75 0 00-.75-.75zm0 2.5a1 1 0 011 1v1.51a2.5 2.5 0 003.2 2.4l3.374 1.36-1.36 3.374a2.5 2.5 0 00-3.2 2.4V16a1 1 0 11-2 0v-1.51a2.5 2.5 0 00-3.2-2.4L3.25 8.716l1.36-3.374a2.5 2.5 0 003.2-2.4V6a1 1 0 011-1z" clip-rule="evenodd" /></svg>`,
-      Platinum: `<svg class="h-24 w-24 text-emerald-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2.5a.75.75 0 00-.75.75v1.51a1 1 0 01-1.28.963L4.6 4.354a.75.75 0 00-.963 1.28l1.36 3.374a1 1 0 01-.964 1.28H2.75a.75.75 0 000 1.5h1.253a1 1 0 01.964 1.28L3.64 16.37a.75.75 0 00.963 1.28l3.373-1.36a1 1 0 011.28.963V18.25a.75.75 0 001.5 0v-1.51a1 1 0 011.28-.963l3.373 1.36a.75.75 0 00.963-1.28l-1.36-3.374a1 1 0 01.964-1.28H17.25a.75.75 0 000-1.5h-1.253a1 1 0 01-.964-1.28l1.36-3.374a.75.75 0 00-.963-1.28l-3.373 1.36a1 1 0 01-1.28-.963V3.25a.75.75 0 00-.75-.75z" clip-rule="evenodd" /></svg>`
+      Argent: `<svg class="h-24 w-24 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2.5a.75.75 0 00-.75.75v1.51a1 1 0 01-1.28.963L4.6 4.354a.75.75 0 00-.963 1.28l1.36 3.374a1 1 0 01-.964 1.28H2.75a.75.75 0 000 1.5h1.253a1 1 0 01.964 1.28L3.64 16.37a.75.75 0 00.963 1.28l3.373-1.36a1 1 0 011.28.963V18.25a.75.75 0 001.5 0v-1.51a1 1 0 011.28-.963l3.373 1.36a.75.75 0 00.963-1.28l-1.36-3.374a1 1 0 01.964-1.28H17.25a.75.75 0 000-1.5h-1.253a1 1 0 01-.964-1.28l1.36-3.374a.75.75 0 00-.963-1.28l-3.373 1.36a1 1 0 01-1.28-.963V3.25a.75.75 0 00-.75-.75zm0 2.5a1 1 0 011 1v1.51a2.5 2.5 0 003.2 2.4l3.374 1.36-1.36 3.374a2.5 2.5 0 00-3.2 2.4V16a1 1 0 11-2 0v-1.51a2.5 2.5 0 00-3.2-2.4L3.25 8.716l1.36-3.374a2.5 2.5 0 003.2-2.4V6a1 1 0 011-1z" clip-rule="evenodd" /></svg>`,
+      Or: `<svg class="h-24 w-24 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2.5a.75.75 0 00-.75.75v1.51a1 1 0 01-1.28.963L4.6 4.354a.75.75 0 00-.963 1.28l1.36 3.374a1 1 0 01-.964 1.28H2.75a.75.75 0 000 1.5h1.253a1 1 0 01.964 1.28L3.64 16.37a.75.75 0 00.963 1.28l3.373-1.36a1 1 0 011.28.963V18.25a.75.75 0 001.5 0v-1.51a1 1 0 011.28-.963l3.373 1.36a.75.75 0 00.963-1.28l-1.36-3.374a1 1 0 01.964-1.28H17.25a.75.75 0 000-1.5h-1.253a1 1 0 01-.964-1.28l1.36-3.374a.75.75 0 00-.963-1.28l-3.373 1.36a1 1 0 01-1.28-.963V3.25a.75.75 0 00-.75-.75zm0 2.5a1 1 0 011 1v1.51a2.5 2.5 0 003.2 2.4l3.374 1.36-1.36 3.374a2.5 2.5 0 00-3.2 2.4V16a1 1 0 11-2 0v-1.51a2.5 2.5 0 00-3.2-2.4L3.25 8.716l1.36-3.374a2.5 2.5 0 003.2-2.4V6a1 1 0 011-1z" clip-rule="evenodd" /></svg>`,
+      Platine: `<svg class="h-24 w-24 text-emerald-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2.5a.75.75 0 00-.75.75v1.51a1 1 0 01-1.28.963L4.6 4.354a.75.75 0 00-.963 1.28l1.36 3.374a1 1 0 01-.964 1.28H2.75a.75.75 0 000 1.5h1.253a1 1 0 01.964 1.28L3.64 16.37a.75.75 0 00.963 1.28l3.373-1.36a1 1 0 011.28.963V18.25a.75.75 0 001.5 0v-1.51a1 1 0 011.28-.963l3.373 1.36a.75.75 0 00.963-1.28l-1.36-3.374a1 1 0 01.964-1.28H17.25a.75.75 0 000-1.5h-1.253a1 1 0 01-.964-1.28l1.36-3.374a.75.75 0 00-.963-1.28l-3.373 1.36a1 1 0 01-1.28-.963V3.25a.75.75 0 00-.75-.75z" clip-rule="evenodd" /></svg>`
     };
 
     const currentBadge = user.badge || 'Bronze';
@@ -36,7 +36,7 @@
   %>
   
   <div class="bg-gray-900 text-white rounded-xl p-6 shadow-2xl transform hover:scale-105 transition-transform duration-300">
-    <h3 class="text-2xl font-bold mb-4 text-center text-emerald-400">RAM Green Champions</h3>
+    <h3 class="text-2xl font-bold mb-4 text-center text-emerald-400">Champions Écologiques RAM</h3>
     
     <div class="flex items-center justify-around">
       <div class="flex-shrink-0 animate-pulse">
@@ -44,7 +44,7 @@
       </div>
       
       <div class="flex-grow ml-6 text-center">
-        <p class="text-xl font-semibold <%= badgeInfo.textColor %>"><%= currentBadge %> Member</p>
+        <p class="text-xl font-semibold <%= badgeInfo.textColor %>">Membre <%= currentBadge %></p>
         <p class="text-4xl font-bold tracking-tight"><%= currentPoints.toLocaleString() %> <span class="text-lg font-light">Points</span></p>
         
         <% if (nextBadge) { %>
@@ -53,18 +53,18 @@
               <div class="bg-emerald-400 h-2.5 rounded-full" style="width: <%= progress %>%"></div>
             </div>
             <p class="text-sm text-gray-400 mt-2">
-              <%= (nextBadge.threshold - currentPoints).toLocaleString() %> points to <span class="font-bold <%= badges[nextBadgeName].textColor %>"><%= nextBadgeName %></span>
+              <%= (nextBadge.threshold - currentPoints).toLocaleString() %> points restants pour le statut <span class="font-bold <%= badges[nextBadgeName].textColor %>"><%= nextBadgeName %></span>
             </p>
           </div>
         <% } else { %>
-          <p class="mt-4 text-lg text-emerald-400 font-semibold">You've reached the pinnacle of green travel!</p>
+          <p class="mt-4 text-lg text-emerald-400 font-semibold">Vous avez atteint le sommet du voyage écologique !</p>
         <% } %>
       </div>
     </div>
   </div>
 
   <div class="border-t pt-6 mt-8">
-    <h3 class="text-2xl font-bold mb-4">Your Booked Flights</h3>
+    <h3 class="text-2xl font-bold mb-4">Vos Vols Réservés</h3>
     <% if (bookings && bookings.length > 0) { %>
       <div class="space-y-4">
         <% bookings.forEach(booking => { %>
@@ -73,7 +73,7 @@
               <div class="flex-grow mb-4 sm:mb-0 sm:mr-4">
                 <p class="font-bold text-xl text-gray-800"><%= booking.flight.from %> &rarr; <%= booking.flight.to %></p>
                 <p class="text-md text-gray-600"><%= booking.flight.airline %></p>
-                <p class="text-sm text-gray-500">Date: <%= new Date(booking.flight.date).toLocaleDateString() %></p>
+                <p class="text-sm text-gray-500">Date : <%= new Date(booking.flight.date).toLocaleDateString('fr-FR') %></p>
                  <div class="mt-2">
                     <p class="font-semibold capitalize text-lg <%= booking.class === 'business' ? 'text-purple-600' : 'text-green-600' %>"><%= booking.class || 'Standard' %></p>
                     <% if (booking.flight.price && booking.class && booking.flight.price[booking.class]) { %>
@@ -94,7 +94,7 @@
         <% }) %>
       </div>
     <% } else { %>
-      <p class="text-center text-gray-500 py-8">You have no booked flights yet. Find a flight to begin!</p>
+      <p class="text-center text-gray-500 py-8">Vous n'avez pas encore de vols réservés. Trouvez un vol pour commencer !</p>
     <% } %>
   </div>
 </div>

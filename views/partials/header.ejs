@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GreenFlight - Fly with Royal Air Maroc</title>
+  <title>GreenFlight - Voyagez avec Royal Air Maroc</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/styles.css">
   <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
@@ -27,32 +27,32 @@
 
         <!-- Desktop Menu -->
         <div class="hidden md:flex items-center space-x-6">
-          <a href="/" class="text-gray-600 hover:text-green-600 font-medium">Home</a>
-          <a href="/flights" class="text-gray-600 hover:text-green-600 font-medium">Flights</a>
-          <a href="/users/leaderboard" class="text-gray-600 hover:text-green-600 font-medium">Leaderboard</a>
+          <a href="/" class="text-gray-600 hover:text-green-600 font-medium">Accueil</a>
+          <a href="/flights" class="text-gray-600 hover:text-green-600 font-medium">Vols</a>
+          <a href="/users/leaderboard" class="text-gray-600 hover:text-green-600 font-medium">Classement</a>
 
           <% if (typeof userId !== 'undefined' && userId) { %>
-            <a href="/users/dashboard" class="bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700">My Dashboard</a>
-            <a href="/users/logout" class="text-gray-600 hover:text-green-600 font-medium">Logout</a>
+            <a href="/users/dashboard" class="bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700">Mon Tableau de Bord</a>
+            <a href="/users/logout" class="text-gray-600 hover:text-green-600 font-medium">Déconnexion</a>
           <% } else { %>
-            <a href="/users/login" class="text-gray-600 hover:text-green-600 font-medium">Login</a>
-            <a href="/users/register" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600">Register</a>
+            <a href="/users/login" class="text-gray-600 hover:text-green-600 font-medium">Connexion</a>
+            <a href="/users/register" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600">S'inscrire</a>
           <% } %>
         </div>
       </div>
 
       <!-- Mobile Menu -->
       <div x-show="open" @click.away="open = false" class="md:hidden mt-4 space-y-2">
-        <a href="/" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Home</a>
-        <a href="/flights" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Flights</a>
-        <a href="/users/leaderboard" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Leaderboard</a>
+        <a href="/" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Accueil</a>
+        <a href="/flights" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Vols</a>
+        <a href="/users/leaderboard" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Classement</a>
         <hr>
         <% if (typeof userId !== 'undefined' && userId) { %>
-          <a href="/users/dashboard" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">My Dashboard</a>
-          <a href="/users/logout" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Logout</a>
+          <a href="/users/dashboard" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Mon Tableau de Bord</a>
+          <a href="/users/logout" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Déconnexion</a>
         <% } else { %>
-          <a href="/users/login" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Login</a>
-          <a href="/users/register" class="block px-4 py-2 bg-blue-500 text-white font-bold rounded hover:bg-blue-600">Register</a>
+          <a href="/users/login" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Connexion</a>
+          <a href="/users/register" class="block px-4 py-2 bg-blue-500 text-white font-bold rounded hover:bg-blue-600">S'inscrire</a>
         <% } %>
       </div>
     </nav>

@@ -2,29 +2,29 @@
 
 <div class="container mx-auto px-4 py-8">
 
-  <!-- Search Form -->
+  <!-- Formulaire de Recherche -->
   <div class="bg-white shadow-md rounded-lg p-8 max-w-lg mx-auto mb-12">
-    <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Find Your Green Flight</h2>
+    <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Trouvez Votre Vol Écologique</h2>
     <form action="/flights" method="GET" class="space-y-4">
       <div>
-        <label for="from" class="block font-bold mb-1 text-gray-600">From:</label>
+        <label for="from" class="block font-bold mb-1 text-gray-600">De :</label>
         <input type="text" id="from" name="from"  class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-green-500">
       </div>
       <div>
-        <label for="to" class="block font-bold mb-1 text-gray-600">To:</label>
+        <label for="to" class="block font-bold mb-1 text-gray-600">À :</label>
         <input type="text" id="to" name="to"  class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-green-500">
       </div>
       <div>
-        <label for="date" class="block font-bold mb-1 text-gray-600">Date:</label>
+        <label for="date" class="block font-bold mb-1 text-gray-600">Date :</label>
         <input type="date" id="date" name="date" class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-green-500">
       </div>
-      <button type="submit" class="w-full bg-green-600 text-white font-bold py-2 px-4 rounded hover:bg-green-700 transition-colors">Search</button>
+      <button type="submit" class="w-full bg-green-600 text-white font-bold py-2 px-4 rounded hover:bg-green-700 transition-colors">Rechercher</button>
     </form>
   </div>
 
-  <!-- Available Flights Section -->
+  <!-- Section des Vols Disponibles -->
   <div class="max-w-4xl mx-auto">
-    <h3 class="text-3xl font-bold text-center text-gray-800 mb-8">Available Flights</h3>
+    <h3 class="text-3xl font-bold text-center text-gray-800 mb-8">Vols Disponibles</h3>
     
     <% if (flights && flights.length > 0) { %>
       <div class="space-y-6">
@@ -36,22 +36,22 @@
               </div>
               <p class="text-md text-gray-600 font-semibold"><%= flight.airline %></p>
               <p class="text-sm text-gray-500">
-                <%= new Date(flight.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %>
+                <%= new Date(flight.date).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %>
               </p>
-              <p class="text-sm text-gray-500"><%= flight.departure_time %> - <%= flight.arrival_time %> (<%= flight.duration %> hours)</p>
+              <p class="text-sm text-gray-500"><%= flight.departure_time %> - <%= flight.arrival_time %> (<%= flight.duration %> heures)</p>
             </div>
             <div class="text-center sm:text-right">
               <% if (flight.price && flight.price.economy) { %>
                 <p class="text-2xl font-bold text-green-600 mb-1"><%= flight.price.economy %> MAD</p>
               <% } %>
               <p class="text-sm text-gray-600 font-medium"><%= flight.carbon_emissions %> kg CO₂</p>
-              <a href="/flights/<%= flight._id %>" class="mt-3 inline-block bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors">View Details</a>
+              <a href="/flights/<%= flight._id %>" class="mt-3 inline-block bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors">Voir les Détails</a>
             </div>
           </div>
         <% }) %>
       </div>
     <% } else { %>
-      <p class="text-center text-gray-500 mt-12">No flights found for your search criteria. Please try again.</p>
+      <p class="text-center text-gray-500 mt-12">Aucun vol trouvé pour vos critères de recherche. Veuillez réessayer.</p>
     <% } %>
   </div>
 

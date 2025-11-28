@@ -1,16 +1,16 @@
 <%- include('partials/header') %>
 
 <div class="bg-white shadow-md rounded-lg p-8 max-w-4xl mx-auto">
-  <h2 class="text-3xl font-bold mb-6 text-center text-green-700">RAM Green Champions Leaderboard</h2>
+  <h2 class="text-3xl font-bold mb-6 text-center text-green-700">Classement des Champions Écologiques RAM</h2>
 
   <div class="overflow-x-auto">
     <table class="min-w-full bg-white border">
       <thead class="bg-gray-100">
         <tr>
-          <th class="py-3 px-4 border-b text-left text-sm font-semibold text-gray-700">Rank</th>
+          <th class="py-3 px-4 border-b text-left text-sm font-semibold text-gray-700">Rang</th>
           <th class="py-3 px-4 border-b text-left text-sm font-semibold text-gray-700">Champion</th>
           <th class="py-3 px-4 border-b text-center text-sm font-semibold text-gray-700">Badge</th>
-          <th class="py-3 px-4 border-b text-right text-sm font-semibold text-gray-700">Green Points</th>
+          <th class="py-3 px-4 border-b text-right text-sm font-semibold text-gray-700">Points Verts</th>
         </tr>
       </thead>
       <tbody>
@@ -21,7 +21,7 @@
               <td class="py-3 px-4 border-b font-semibold text-gray-800"><%= user.username %></td>
               <td class="py-3 px-4 border-b text-center">
                 <% 
-                  const badges = { Bronze: '#cd7f32', Silver: '#c0c0c0', Gold: '#ffd700', Platinum: '#e5e4e2' };
+                  const badges = { Bronze: '#cd7f32', Argent: '#c0c0c0', Or: '#ffd700', Platine: '#e5e4e2' };
                 %>
                 <span class="font-semibold px-3 py-1 rounded-full text-sm" style="background-color:<%= badges[user.badge] || '#ffffff' %>;">
                   <%= user.badge %>
@@ -32,7 +32,7 @@
           <% }) %>
         <% } else { %>
           <tr>
-            <td colspan="4" class="text-center py-8 text-gray-500">The leaderboard is empty. Book flights to become a champion!</td>
+            <td colspan="4" class="text-center py-8 text-gray-500">Le classement est vide. Réservez des vols pour devenir un champion !</td>
           </tr>
         <% } %>
       </tbody>
@@ -40,7 +40,7 @@
   </div>
 
   <% if (userId) { %>
-    <p class="text-center mt-4 text-sm text-gray-600">Your ranking is highlighted in green.</p>
+    <p class="text-center mt-4 text-sm text-gray-600">Votre classement est surligné en vert.</p>
   <% } %>
 
 </div>
