@@ -1,0 +1,82 @@
+<%- include('partials/header') %>
+
+<div class="bg-white shadow-md rounded-lg p-8 max-w-4xl mx-auto">
+  <h2 class="text-3xl font-bold mb-6 text-center">Welcome to your Dashboard, <%= user.username %>!</h2>
+
+  <%# RAM Green Champions Section %>
+  <% 
+    const badges = {
+      Bronze: { threshold: 0, color: '#cd7f32', next: 'Silver' },
+      Silver: { threshold: 500, color: '#c0c0c0', next: 'Gold' },
+      Gold: { threshold: 1500, color: '#ffd700', next: 'Platinum' },
+      Platinum: { threshold: 3000, color: '#e5e4e2', next: null }
+    };
+    const currentBadge = user.badge || 'Bronze';
+    const currentPoints = user.greenPoints || 0;
+    const badgeInfo = badges[currentBadge];
+    const nextBadge = badgeInfo.next ? badges[badgeInfo.next] : null;
+
+    let progress = 0;
+    if (nextBadge) {
+      const pointsForNextLevel = nextBadge.threshold - badgeInfo.threshold;
+      const userProgress = currentPoints - badgeInfo.threshold;
+      progress = Math.min((userProgress / pointsForNextLevel) * 100, 100); 
+    }
+  %>
+  <div class="border rounded-lg p-6 my-6 bg-gray-50">
+    <h3 class="text-2xl font-bold mb-4 text-center text-green-700">RAM Green Champions</h3>
+    <div class="text-center mb-4">
+      <span class="text-lg font-semibold px-4 py-1 rounded-full" style="background-color:<%= badgeInfo.color %>;"><%= currentBadge %></span>
+      <p class="mt-2 text-xl font-bold"><%= currentPoints %> Points</p>
+    </div>
+    <% if (nextBadge) { %>
+      <div class="w-full bg-gray-200 rounded-full h-4 mb-2">
+        <div class="bg-green-600 h-4 rounded-full" style="width: <%= progress %>%"></div>
+      </div>
+      <p class="text-center text-sm text-gray-600">You need <%= nextBadge.threshold - currentPoints %> more points to reach <%= badgeInfo.next %>.</p>
+    <% } else { %>
+      <p class="text-center text-green-600 font-semibold">Congratulations! You have reached the highest level!</p>
+    <% } %>
+  </div>
+
+  <div class="border-t pt-6 mt-6">
+    <h3 class="text-2xl font-bold mb-4">Your Booked Flights</h3>
+    <% if (bookings && bookings.length > 0) { %>
+      <div class="space-y-4">
+        <% bookings.forEach(booking => { %>
+          <%# This check prevents a crash if a booking is invalid or references a deleted flight %>
+          <% if (booking && booking.flight) { %>
+            <div class="border border-gray-200 p-4 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center">
+              
+              <div class="flex-grow mb-4 sm:mb-0 sm:mr-4">
+                <p class="font-bold text-xl text-gray-800"><%= booking.flight.from %> &rarr; <%= booking.flight.to %></p>
+                <p class="text-md text-gray-600"><%= booking.flight.airline %></p>
+                <p class="text-sm text-gray-500">Date: <%= new Date(booking.flight.date).toLocaleDateString() %></p>
+                <div class="mt-2">
+                    <p class="font-semibold capitalize text-lg <%= booking.class === 'business' ? 'text-purple-600' : 'text-green-600' %>"><%= booking.class || 'Standard' %></p>
+                    <% if (booking.flight.price && booking.class && booking.flight.price[booking.class]) { %>
+                        <p class="font-bold text-xl text-gray-800"><%= booking.flight.price[booking.class] %> MAD</p>
+                    <% } %>
+                </div>
+              </div>
+              
+              <div class="flex items-center space-x-2">
+                <a href="/<%= booking.flight._id %>" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors text-sm whitespace-nowrap">Modifier</a>
+                <%# This form sends a DELETE request to /bookings/:id %>
+                <form action="/bookings/<%= booking._id %>?_method=DELETE" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir annuler cette réservation ?');" class="m-0">
+                    <button type="submit" class="bg-red-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-700 transition-colors text-sm whitespace-nowrap">Annuler</button>
+                </form>
+              </div>
+
+            </div>
+          <% } %>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <p class="text-center text-gray-500 py-8">You have no booked flights yet. Find a flight to begin!</p>
+    <% } %>
+  </div>
+
+</div>
+
+<%- include('partials/footer') %>

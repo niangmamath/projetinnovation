@@ -1,0 +1,232 @@
+<%- include('partials/header') %>
+
+<% if (flight) { %>
+<div class="max-w-6xl mx-auto px-4 py-8">
+    <!-- Flight Info Header -->
+    <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+        <div class="grid grid-cols-3 items-center">
+            <div class="text-left">
+                <p class="text-3xl font-bold"><%= flight.departure_time %></p>
+                <p class="text-xl font-semibold"><%= flight.from.split(',')[0] %></p>
+                <p class="text-sm text-gray-500">Terminal 1</p>
+            </div>
+            <div class="text-center text-gray-500">
+                <p class="text-sm">Duration <%= flight.duration %>h</p>
+                <div class="w-full h-px bg-gray-300 relative my-1">
+                    <i class="fas fa-plane absolute right-1/2 transform translate-x-1/2 -top-2 text-gray-400"></i>
+                </div>
+                <p class="text-sm"><%= flight.airline %></p>
+            </div>
+            <div class="text-right">
+                <p class="text-3xl font-bold"><%= flight.arrival_time %></p>
+                <p class="text-xl font-semibold"><%= flight.to.split(',')[0] %></p>
+                <p class="text-sm text-gray-500">Terminal 2</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fare Selection Tabs -->
+    <div class="grid grid-cols-2 text-center mb-4">
+        <div id="economy-tab" class="fare-tab active-tab cursor-pointer p-4 border-b-4 border-blue-500">
+            <h3 class="font-bold text-lg">Economy</h3>
+            <p>from</p>
+            <p class="font-bold text-xl"><%= flight.price.economy %> MAD</p>
+        </div>
+        <div id="business-tab" class="fare-tab inactive-tab cursor-pointer p-4 border-b-4 border-transparent">
+            <h3 class="font-bold text-lg">Business</h3>
+            <p>from</p>
+            <p class="font-bold text-xl"><%= flight.price.business %> MAD</p>
+        </div>
+    </div>
+
+    <h2 class="text-2xl font-bold text-center mb-6">Select a fare</h2>
+
+    <!-- Panels Container -->
+    <div>
+        <!-- Economy Panel -->
+        <div id="economy-panel" class="fare-panel">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <!-- Economy Light -->
+                <div class="fare-card">
+                    <h4 class="font-bold text-lg">Economy Light</h4>
+                    <p class="text-2xl font-bold my-2"><%= flight.price.economy %> MAD</p>
+                    <div class="text-left space-y-3">
+                        <p><i class="fas fa-times-circle text-red-500"></i> Modification not allowed</p>
+                        <p><i class="fas fa-times-circle text-red-500"></i> Refund not allowed</p>
+                        <p><i class="fas fa-suitcase"></i> 1 carry-on bag (8kg)</p>
+                    </div>
+                    <form action="/<%= flight._id %>/book" method="POST" class="mt-auto pt-4">
+                        <input type="hidden" name="seatClass" value="economy">
+                        <button type="submit" class="select-button">Select</button>
+                    </form>
+                </div>
+                <!-- Economy Classic -->
+                <div class="fare-card">
+                    <h4 class="font-bold text-lg">Economy Classic</h4>
+                    <p class="text-2xl font-bold my-2"><%= (flight.price.economy + 500) %> MAD</p>
+                    <div class="text-left space-y-3">
+                        <p><i class="fas fa-check-circle text-green-500"></i> Modification for a fee</p>
+                        <p><i class="fas fa-times-circle text-red-500"></i> Refund not allowed</p>
+                        <p><i class="fas fa-suitcase"></i> 1 carry-on bag (8kg)</p>
+                        <p><i class="fas fa-suitcase-rolling"></i> 1 checked bag (23kg)</p>
+                    </div>
+                    <form action="/<%= flight._id %>/book" method="POST" class="mt-auto pt-4">
+                        <input type="hidden" name="seatClass" value="economy">
+                        <button type="submit" class="select-button">Select</button>
+                    </form>
+                </div>
+                <!-- Economy Green (Recommended) -->
+                <div class="fare-card border-yellow-400 border-2 relative">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-yellow-400 text-sm font-bold px-3 py-1 rounded-full">Recommended</div>
+                    <h4 class="font-bold text-lg">Economy Green</h4>
+                    <p class="text-2xl font-bold my-2"><%= (flight.price.economy + 800) %> MAD</p>
+                    <div class="text-left space-y-3">
+                        <p><i class="fas fa-check-circle text-green-500"></i> Free modification</p>
+                        <p><i class="fas fa-times-circle text-red-500"></i> Refund not allowed</p>
+                        <p><i class="fas fa-suitcase"></i> 1 carry-on bag (8kg)</p>
+                        <p><i class="fas fa-leaf text-green-500"></i> 20% Sustainable Fuel</p>
+                    </div>
+                    <form action="/<%= flight._id %>/book" method="POST" class="mt-auto pt-4">
+                        <input type="hidden" name="seatClass" value="economy">
+                        <button type="submit" class="select-button">Select</button>
+                    </form>
+                </div>
+                <!-- Economy Flex -->
+                <div class="fare-card">
+                    <h4 class="font-bold text-lg">Economy Flex</h4>
+                    <p class="text-2xl font-bold my-2"><%= (flight.price.economy + 1200) %> MAD</p>
+                     <div class="text-left space-y-3">
+                        <p><i class="fas fa-check-circle text-green-500"></i> Free modification</p>
+                        <p><i class="fas fa-check-circle text-green-500"></i> Refundable (fee applies)</p>
+                        <p><i class="fas fa-suitcase"></i> 1 carry-on bag (8kg)</p>
+                        <p><i class="fas fa-suitcase-rolling"></i> 1 checked bag (23kg)</p>
+                    </div>
+                     <form action="/<%= flight._id %>/book" method="POST" class="mt-auto pt-4">
+                        <input type="hidden" name="seatClass" value="economy">
+                        <button type="submit" class="select-button">Select</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Business Panel -->
+        <div id="business-panel" class="fare-panel hidden">
+             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Business Saver -->
+                <div class="fare-card">
+                    <h4 class="font-bold text-lg">Business Saver</h4>
+                    <p class="text-2xl font-bold my-2"><%= flight.price.business %> MAD</p>
+                    <div class="text-left space-y-3">
+                        <p><i class="fas fa-times-circle text-red-500"></i> Modification not allowed</p>
+                        <p><i class="fas fa-times-circle text-red-500"></i> Refund not allowed</p>
+                        <p><i class="fas fa-suitcase"></i> 2 carry-on bags (8kg)</p>
+                        <p><i class="fas fa-suitcase-rolling"></i> 2 checked bags (32kg)</p>
+                        <p><i class="fas fa-lock"></i> Seat next to you is empty</p>
+                        <p><i class="fas fa-coffee"></i> Lounge access</p>
+                    </div>
+                    <form action="/<%= flight._id %>/book" method="POST" class="mt-auto pt-4">
+                        <input type="hidden" name="seatClass" value="business">
+                        <button type="submit" class="select-button">Select</button>
+                    </form>
+                </div>
+
+                <!-- Business Green (Recommended) -->
+                <div class="fare-card border-yellow-400 border-2 relative">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-yellow-400 text-sm font-bold px-3 py-1 rounded-full">Recommended</div>
+                    <h4 class="font-bold text-lg">Business Green</h4>
+                    <p class="text-2xl font-bold my-2"><%= (flight.price.business + 2000) %> MAD</p>
+                    <div class="text-left space-y-3">
+                        <p><i class="fas fa-check-circle text-green-500"></i> Free modification</p>
+                        <p><i class="fas fa-times-circle text-red-500"></i> Refund not allowed</p>
+                        <p><i class="fas fa-suitcase"></i> 2 carry-on bags (8kg)</p>
+                        <p><i class="fas fa-leaf text-green-500"></i> 20% Sustainable Fuel</p>
+                        <p><i class="fas fa-bolt text-yellow-500"></i> Fast-track security</p>
+                        <p><i class="fas fa-coffee"></i> Lounge access</p>
+                        <p><i class="fas fa-star"></i> 20% extra miles</p>
+                    </div>
+                    <form action="/<%= flight._id %>/book" method="POST" class="mt-auto pt-4">
+                        <input type="hidden" name="seatClass" value="business">
+                        <button type="submit" class="select-button">Select</button>
+                    </form>
+                </div>
+
+                <!-- Business Flex -->
+                <div class="fare-card">
+                    <h4 class="font-bold text-lg">Business Flex</h4>
+                    <p class="text-2xl font-bold my-2"><%= (flight.price.business + 5000) %> MAD</p>
+                    <div class="text-left space-y-3">
+                        <p><i class="fas fa-check-circle text-green-500"></i> Free modification</p>
+                        <p><i class="fas fa-check-circle text-green-500"></i> Refundable</p>
+                        <p><i class="fas fa-suitcase-rolling"></i> 2 checked bags (32kg)</p>
+                        <p><i class="fas fa-lock"></i> Seat next to you is empty</p>
+                        <p><i class="fas fa-bolt text-yellow-500"></i> Fast-track security</p>
+                        <p><i class="fas fa-coffee"></i> Lounge access</p>
+                        <p><i class="fas fa-clock"></i> Take an earlier flight</p>
+                    </div>
+                    <form action="/<%= flight._id %>/book" method="POST" class="mt-auto pt-4">
+                        <input type="hidden" name="seatClass" value="business">
+                        <button type="submit" class="select-button">Select</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<% } else { %>
+<p class="text-center text-gray-500">Flight details could not be found.</p>
+<% } %>
+
+<style>
+    .fare-tab { transition: all 0.3s ease; }
+    .active-tab { background-color: white; border-color: #3b82f6; }
+    .inactive-tab { background-color: #f3f4f6; }
+    .fare-card {
+        background-color: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+    }
+    .select-button {
+        width: 100%;
+        background-color: white;
+        color: #3b82f6;
+        border: 2px solid #3b82f6;
+        font-weight: bold;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        border-radius: 0.25rem;
+        transition: all 0.3s ease;
+    }
+    .select-button:hover {
+        background-color: #3b82f6;
+        color: white;
+    }
+</style>
+
+<script>
+    const economyTab = document.getElementById('economy-tab');
+    const businessTab = document.getElementById('business-tab');
+    const economyPanel = document.getElementById('economy-panel');
+    const businessPanel = document.getElementById('business-panel');
+
+    economyTab.addEventListener('click', () => {
+        economyTab.classList.replace('inactive-tab', 'active-tab');
+        businessTab.classList.replace('active-tab', 'inactive-tab');
+        economyPanel.classList.remove('hidden');
+        businessPanel.classList.add('hidden');
+    });
+
+    businessTab.addEventListener('click', () => {
+        businessTab.classList.replace('inactive-tab', 'active-tab');
+        economyTab.classList.replace('active-tab', 'inactive-tab');
+        businessPanel.classList.remove('hidden');
+        economyPanel.classList.add('hidden');
+    });
+</script>
+
+<%- include('partials/footer') %>
