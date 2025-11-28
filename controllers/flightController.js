@@ -24,7 +24,7 @@ exports.getAllFlights = async (req, res) => {
     if (from) searchCriteria.from = new RegExp(from, 'i');
     if (to) searchCriteria.to = new RegExp(to, 'i');
     const flights = await Flight.find(searchCriteria);
-    res.render('flights', { flights: flights, userId: req.session.userId });
+    res.render('flights', { flights: flights, userId: req.session.userId, messages: req.flash() });
   } catch (error) {
     res.status(500).send('Error loading flights');
   }
@@ -33,7 +33,7 @@ exports.getAllFlights = async (req, res) => {
 exports.getFlightDetails = async (req, res) => {
   try {
     const flight = await Flight.findById(req.params.id);
-    res.render('details', { flight, userId: req.session.userId });
+    res.render('details', { flight, userId: req.session.userId, messages: req.flash() });
   } catch (error) {
     res.status(500).send('Error getting flight details');
   }
@@ -41,54 +41,89 @@ exports.getFlightDetails = async (req, res) => {
 
 exports.bookFlight = async (req, res) => {
   if (!req.session.userId) {
+    req.flash('error', 'Vous devez être connecté pour réserver.');
     return res.redirect('/users/login');
   }
 
   try {
     const user = await User.findById(req.session.userId);
-    const flight = await Flight.findById(req.params.id);
+    const newFlight = await Flight.findById(req.params.id);
 
-    if (!user || !flight) {
-      return res.status(404).send('User or Flight not found.');
+    if (!user || !newFlight) {
+      req.flash('error', 'Utilisateur ou vol non trouvé.');
+      return res.redirect('/flights');
     }
 
     const { class: selectedClass } = req.body;
-    if (!selectedClass || !['economy', 'business', 'economy_flex'].includes(selectedClass)) {
-      return res.status(400).send('Invalid class selection.');
+    const validClasses = ['economy', 'business', 'economy_flex'];
+    if (!selectedClass || !validClasses.includes(selectedClass)) {
+        req.flash('error', 'Classe de voyage invalide.');
+        return res.redirect(`/flights/${newFlight._id}`);
     }
 
-    // *** LOGIC IMPROVEMENT ***
-    // 1. Define multipliers centrally
     const multipliers = { economy: 1, economy_flex: 1.2, business: 1.5 };
-    const multiplier = multipliers[selectedClass];
+    const pointsForNewFlight = Math.round((newFlight.greenPoints || 0) * multipliers[selectedClass]);
 
-    // 2. Calculate the exact points for this booking
-    const pointsAwarded = Math.round((flight.greenPoints || 0) * multiplier);
+    // === TRANSACTIONAL FLIGHT CHANGE LOGIC ===
+    if (req.session.changeBookingId) {
+        const oldBookingId = req.session.changeBookingId;
+        const oldBooking = await Booking.findById(oldBookingId);
 
-    // 3. Create the booking with the exact points earned stored
-    const newBooking = new Booking({
-      user: user._id,
-      flight: flight._id,
-      class: selectedClass,
-      pointsEarned: pointsAwarded // Storing the calculated points
-    });
-    
-    // 4. Update user's total points
-    user.greenPoints += pointsAwarded;
-    updateUserBadge(user);
+        if (!oldBooking || oldBooking.user.toString() !== user._id.toString()) {
+            req.flash('error', 'La réservation que vous essayez de modifier est invalide.');
+            delete req.session.changeBookingId; // Clean up session
+            return res.redirect('/users/dashboard');
+        }
 
-    // 5. Save both documents concurrently for better performance
-    await Promise.all([newBooking.save(), user.save()]);
+        // Create the new booking first
+        const newBooking = new Booking({
+            user: user._id,
+            flight: newFlight._id,
+            class: selectedClass,
+            pointsEarned: pointsForNewFlight
+        });
 
-    res.redirect('/users/dashboard');
+        // Adjust user points: subtract old, add new
+        user.greenPoints = (user.greenPoints - oldBooking.pointsEarned) + pointsForNewFlight;
+        if (user.greenPoints < 0) user.greenPoints = 0;
+        updateUserBadge(user);
+
+        // Perform operations: delete old, save new, update user
+        await Promise.all([
+            oldBooking.deleteOne(),
+            newBooking.save(),
+            user.save()
+        ]);
+
+        delete req.session.changeBookingId; // IMPORTANT: Clean up the session
+        req.flash('success', 'Votre vol a été modifié avec succès!');
+        res.redirect('/users/dashboard');
+
+    } else {
+        // === STANDARD BOOKING LOGIC ===
+        const newBooking = new Booking({
+            user: user._id,
+            flight: newFlight._id,
+            class: selectedClass,
+            pointsEarned: pointsForNewFlight
+        });
+
+        user.greenPoints += pointsForNewFlight;
+        updateUserBadge(user);
+
+        await Promise.all([newBooking.save(), user.save()]);
+
+        req.flash('success', 'Vol réservé avec succès!');
+        res.redirect('/users/dashboard');
+    }
 
   } catch (error) {
-    // Handle potential duplicate booking error
     if (error.code === 11000) {
-        // You can add a specific user-friendly message here
-        return res.status(409).send('You have already booked this flight in the selected class.');
+        req.flash('error', 'Vous avez déjà une réservation pour ce vol dans cette classe.');
+        return res.redirect(`/flights/${req.params.id}`);
     }
     console.error('Booking Error:', error);
-    res.status(500).send('An error occurred while booking the flight.');
+    req.flash('error', 'Une erreur est survenue lors de la réservation.');
+    res.redirect('/flights');
   }
 };

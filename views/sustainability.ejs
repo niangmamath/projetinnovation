@@ -1,0 +1,62 @@
+<%- include('partials/header') %>
+
+<div class="bg-white text-gray-800">
+
+    <!-- Hero Section -->
+    <section class="relative bg-cover bg-center py-32" style="background-image: url('https://images.unsplash.com/photo-1477346611705-65d1883cee1e?q=80&w=2070&auto=format&fit=crop');">
+        <div class="absolute inset-0 bg-green-800 bg-opacity-60"></div>
+        <div class="relative container mx-auto px-4 text-center text-white">
+            <h1 class="text-5xl font-extrabold mb-4">Notre Engagement pour une Aviation Durable</h1>
+            <p class="text-xl max-w-3xl mx-auto">Nous croyons en un avenir où le voyage aérien et le respect de la planète vont de pair.</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-20">
+        <div class="container mx-auto px-4 max-w-4xl">
+
+            <!-- What is SAF? -->
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold text-green-700 mb-6">Qu'est-ce que le Carburant d'Aviation Durable (SAF) ?</h2>
+                <p class="text-lg text-gray-700 leading-relaxed mb-4">
+                    Le Carburant d'Aviation Durable (SAF) est une alternative plus propre au kérosène conventionnel. Fabriqué à partir de sources renouvelables comme les huiles de cuisson usagées, les déchets agricoles ou les algues, il permet de réduire les émissions de carbone jusqu'à 80% par rapport au carburant fossile qu'il remplace.
+                </p>
+                <p class="text-lg text-gray-700 leading-relaxed">
+                    L'utilisation du SAF est la mesure la plus efficace que nous puissions prendre à court et moyen terme pour décarboner le transport aérien. Il peut être utilisé dans les moteurs d'avions existants sans aucune modification, ce qui en fait une solution immédiate et puissante.
+                </p>
+            </div>
+
+            <!-- Our Goals -->
+            <div class="bg-gray-50 rounded-lg p-10 mb-16 shadow-lg">
+                <h2 class="text-3xl font-bold text-center mb-8">Nos Objectifs Ambitieux</h2>
+                <div class="flex flex-col md:flex-row justify-around items-center text-center">
+                    <!-- Goal 1 -->
+                    <div class="mb-8 md:mb-0">
+                        <p class="text-6xl font-bold text-green-600">10%</p>
+                        <p class="text-xl font-semibold mt-2">de SAF dans nos réservoirs d'ici 2030</p>
+                    </div>
+                    <!-- Goal 2 -->
+                    <div>
+                        <p class="text-6xl font-bold text-green-600">-20%</p>
+                        <p class="text-xl font-semibold mt-2">d'émissions de CO2 par passager d'ici 2035</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- How You Participate -->
+            <div class="mb-12 text-center">
+                <h2 class="text-3xl font-bold mb-6">Comment Votre Voyage Fait la Différence</h2>
+                <p class="text-lg text-gray-700 leading-relaxed max-w-3xl mx-auto mb-6">
+                    Chaque fois que vous réservez un vol avec nous, vous soutenez notre investissement dans le SAF et d'autres technologies vertes. En choisissant nos tarifs 'Economy Flex' ou en rejoignant notre programme de fidélité <span class="font-bold text-green-700">Green Champions</span>, vous accélérez activement la transition vers une aviation plus propre.
+                </p>
+                <a href="/register" class="bg-yellow-500 text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-yellow-600 transition duration-300">
+                    Devenez un Green Champion
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+</div>
+
+<%- include('partials/footer') %>

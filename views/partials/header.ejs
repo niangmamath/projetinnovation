@@ -31,7 +31,7 @@
           <a href="/flights" class="text-gray-600 hover:text-green-600 font-medium">Flights</a>
           <a href="/users/leaderboard" class="text-gray-600 hover:text-green-600 font-medium">Leaderboard</a>
 
-          <% if (userId) { %>
+          <% if (typeof userId !== 'undefined' && userId) { %>
             <a href="/users/dashboard" class="bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700">My Dashboard</a>
             <a href="/users/logout" class="text-gray-600 hover:text-green-600 font-medium">Logout</a>
           <% } else { %>
@@ -47,7 +47,7 @@
         <a href="/flights" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Flights</a>
         <a href="/users/leaderboard" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Leaderboard</a>
         <hr>
-        <% if (userId) { %>
+        <% if (typeof userId !== 'undefined' && userId) { %>
           <a href="/users/dashboard" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">My Dashboard</a>
           <a href="/users/logout" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Logout</a>
         <% } else { %>
@@ -57,5 +57,23 @@
       </div>
     </nav>
   </header>
+
+  <!-- Flash Messages -->
+  <div class="container mx-auto px-4 mt-4">
+      <% if (typeof messages !== 'undefined' && Object.keys(messages).length > 0) { %>
+          <% Object.keys(messages).forEach(function(key) { %>
+              <% const style = {
+                  success: 'bg-green-100 border-green-400 text-green-700',
+                  error: 'bg-red-100 border-red-400 text-red-700',
+                  info: 'bg-blue-100 border-blue-400 text-blue-700'
+              }[key] || 'bg-gray-100 border-gray-400 text-gray-700'; %>
+              <% messages[key].forEach(function(message) { %>
+                  <div class="border px-4 py-3 rounded relative my-2 <%= style %>" role="alert">
+                      <span class="block sm:inline"><%= message %></span>
+                  </div>
+              <% }) %>
+          <% }) %>
+      <% } %>
+  </div>
 
   <main class="container mx-auto p-4">

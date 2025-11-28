@@ -4,6 +4,10 @@
 <div class="max-w-6xl mx-auto px-4 py-8">
     <!-- Flight Info Header -->
     <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+        <div class="flex justify-between items-start mb-4">
+            <h2 class="text-2xl font-bold text-gray-800">Détails du Vol</h2>
+            <a href="/flights/<%= flight._id %>/edit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors text-sm">Modifier le Vol</a>
+        </div>
         <div class="grid grid-cols-3 items-center">
             <div class="text-left">
                 <p class="text-3xl font-bold"><%= flight.departure_time %></p>
@@ -11,7 +15,7 @@
                 <p class="text-sm text-gray-500">Terminal 1</p>
             </div>
             <div class="text-center text-gray-500">
-                <p class="text-sm">Duration <%= flight.duration %>h</p>
+                <p class="text-sm">Durée <%= flight.duration %>h</p>
                 <div class="w-full h-px bg-gray-300 relative my-1">
                     <i class="fas fa-plane absolute right-1/2 transform translate-x-1/2 -top-2 text-gray-400"></i>
                 </div>
@@ -28,18 +32,18 @@
     <!-- Fare Selection Tabs -->
     <div class="grid grid-cols-2 text-center mb-4">
         <div id="economy-tab" class="fare-tab active-tab cursor-pointer p-4 border-b-4 border-blue-500">
-            <h3 class="font-bold text-lg">Economy</h3>
-            <p>from</p>
+            <h3 class="font-bold text-lg">Économique</h3>
+            <p>dès</p>
             <p class="font-bold text-xl"><%= flight.price.economy %> MAD</p>
         </div>
         <div id="business-tab" class="fare-tab inactive-tab cursor-pointer p-4 border-b-4 border-transparent">
-            <h3 class="font-bold text-lg">Business</h3>
-            <p>from</p>
+            <h3 class="font-bold text-lg">Affaires</h3>
+            <p>dès</p>
             <p class="font-bold text-xl"><%= flight.price.business %> MAD</p>
         </div>
     </div>
 
-    <h2 class="text-2xl font-bold text-center mb-6">Select a fare</h2>
+    <h2 class="text-2xl font-bold text-center mb-6">Sélectionnez un tarif</h2>
 
     <!-- Panels Container -->
     <div>
@@ -48,52 +52,52 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <!-- Economy Light -->
                 <div class="fare-card">
-                    <h4 class="font-bold text-lg">Economy Light</h4>
+                    <h4 class="font-bold text-lg">Économique Light</h4>
                     <p class="text-2xl font-bold my-2"><%= flight.price.economy %> MAD</p>
                     <p class="text-green-500 font-semibold mb-4"><i class="fas fa-leaf"></i> +<%= Math.round((flight.greenPoints || 0) * 1) %> Points</p>
                     <div class="text-left space-y-3">
-                        <p><i class="fas fa-times-circle text-red-500"></i> No changes</p>
-                        <p><i class="fas fa-times-circle text-red-500"></i> No refund</p>
-                        <p><i class="fas fa-suitcase"></i> 1 carry-on (8kg)</p>
+                        <p><i class="fas fa-times-circle text-red-500"></i> Aucun changement</p>
+                        <p><i class="fas fa-times-circle text-red-500"></i> Non remboursable</p>
+                        <p><i class="fas fa-suitcase"></i> 1 bagage cabine (8kg)</p>
                     </div>
-                    <form action="/<%= flight._id %>/book" method="POST" class="mt-auto pt-4">
+                    <form action="/flights/<%= flight._id %>/book" method="POST" class="mt-auto pt-4">
                         <input type="hidden" name="class" value="economy">
-                        <button type="submit" class="select-button">Select</button>
+                        <button type="submit" class="select-button">Sélectionner</button>
                     </form>
                 </div>
                 
                 <!-- Economy Flex -->
                 <div class="fare-card border-yellow-400 border-2 relative">
-                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-yellow-400 text-sm font-bold px-3 py-1 rounded-full">Recommended</div>
-                    <h4 class="font-bold text-lg">Economy Flex</h4>
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-yellow-400 text-sm font-bold px-3 py-1 rounded-full">Recommandé</div>
+                    <h4 class="font-bold text-lg">Économique Flex</h4>
                     <p class="text-2xl font-bold my-2"><%= (flight.price.economy + 800) %> MAD</p>
                     <p class="text-green-500 font-semibold mb-4"><i class="fas fa-leaf"></i> +<%= Math.round((flight.greenPoints || 0) * 1.2) %> Points</p>
                     <div class="text-left space-y-3">
-                        <p><i class="fas fa-check-circle text-green-500"></i> Free change</p>
-                        <p><i class="fas fa-check-circle text-green-500"></i> Refundable</p>
-                        <p><i class="fas fa-suitcase"></i> 1 carry-on (8kg)</p>
-                        <p><i class="fas fa-leaf text-green-500"></i> SAF included</p>
+                        <p><i class="fas fa-check-circle text-green-500"></i> Changement gratuit</p>
+                        <p><i class="fas fa-check-circle text-green-500"></i> Remboursable</p>
+                        <p><i class="fas fa-suitcase"></i> 1 bagage cabine (8kg)</p>
+                        <p><i class="fas fa-leaf text-green-500"></i> SAF inclus</p>
                     </div>
-                    <form action="/<%= flight._id %>/book" method="POST" class="mt-auto pt-4">
+                    <form action="/flights/<%= flight._id %>/book" method="POST" class="mt-auto pt-4">
                         <input type="hidden" name="class" value="economy_flex">
-                        <button type="submit" class="select-button">Select</button>
+                        <button type="submit" class="select-button">Sélectionner</button>
                     </form>
                 </div>
 
                 <!-- Economy Classic (moved for layout) -->
                 <div class="fare-card">
-                    <h4 class="font-bold text-lg">Economy Classic</h4>
+                    <h4 class="font-bold text-lg">Économique Classique</h4>
                     <p class="text-2xl font-bold my-2"><%= (flight.price.economy + 500) %> MAD</p>
                     <p class="text-green-500 font-semibold mb-4"><i class="fas fa-leaf"></i> +<%= Math.round((flight.greenPoints || 0) * 1) %> Points</p>
                     <div class="text-left space-y-3">
-                        <p><i class="fas fa-check-circle text-green-500"></i> Change with fee</p>
-                        <p><i class="fas fa-times-circle text-red-500"></i> No refund</p>
-                        <p><i class="fas fa-suitcase"></i> 1 carry-on (8kg)</p>
-                        <p><i class="fas fa-suitcase-rolling"></i> 1 checked bag (23kg)</p>
+                        <p><i class="fas fa-check-circle text-green-500"></i> Changement avec frais</p>
+                        <p><i class="fas fa-times-circle text-red-500"></i> Non remboursable</p>
+                        <p><i class="fas fa-suitcase"></i> 1 bagage cabine (8kg)</p>
+                        <p><i class="fas fa-suitcase-rolling"></i> 1 bagage en soute (23kg)</p>
                     </div>
-                    <form action="/<%= flight._id %>/book" method="POST" class="mt-auto pt-4">
+                    <form action="/flights/<%= flight._id %>/book" method="POST" class="mt-auto pt-4">
                         <input type="hidden" name="class" value="economy">
-                        <button type="submit" class="select-button">Select</button>
+                        <button type="submit" class="select-button">Sélectionner</button>
                     </form>
                 </div>
             </div>
@@ -104,41 +108,41 @@
              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <!-- Business Saver -->
                 <div class="fare-card">
-                    <h4 class="font-bold text-lg">Business Saver</h4>
+                    <h4 class="font-bold text-lg">Affaires Saver</h4>
                     <p class="text-2xl font-bold my-2"><%= flight.price.business %> MAD</p>
                     <p class="text-green-500 font-semibold mb-4"><i class="fas fa-leaf"></i> +<%= Math.round((flight.greenPoints || 0) * 1.5) %> Points</p>
                     <div class="text-left space-y-3">
-                        <p><i class="fas fa-times-circle text-red-500"></i> No changes</p>
-                        <p><i class="fas fa-times-circle text-red-500"></i> No refund</p>
-                        <p><i class="fas fa-suitcase"></i> 2 carry-on (8kg)</p>
-                        <p><i class="fas fa-suitcase-rolling"></i> 2 checked bags (32kg)</p>
-                        <p><i class="fas fa-lock"></i> Empty seat next to you</p>
-                        <p><i class="fas fa-coffee"></i> Lounge access</p>
+                        <p><i class="fas fa-times-circle text-red-500"></i> Aucun changement</p>
+                        <p><i class="fas fa-times-circle text-red-500"></i> Non remboursable</p>
+                        <p><i class="fas fa-suitcase"></i> 2 bagages cabine (8kg)</p>
+                        <p><i class="fas fa-suitcase-rolling"></i> 2 bagages en soute (32kg)</p>
+                        <p><i class="fas fa-lock"></i> Siège voisin libre</p>
+                        <p><i class="fas fa-coffee"></i> Accès au salon</p>
                     </div>
-                    <form action="/<%= flight._id %>/book" method="POST" class="mt-auto pt-4">
+                    <form action="/flights/<%= flight._id %>/book" method="POST" class="mt-auto pt-4">
                         <input type="hidden" name="class" value="business">
-                        <button type="submit" class="select-button">Select</button>
+                        <button type="submit" class="select-button">Sélectionner</button>
                     </form>
                 </div>
 
                 <!-- Business Flex -->
                 <div class="fare-card border-yellow-400 border-2 relative">
-                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-yellow-400 text-sm font-bold px-3 py-1 rounded-full">Recommended</div>
-                    <h4 class="font-bold text-lg">Business Flex</h4>
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-yellow-400 text-sm font-bold px-3 py-1 rounded-full">Recommandé</div>
+                    <h4 class="font-bold text-lg">Affaires Flex</h4>
                     <p class="text-2xl font-bold my-2"><%= (flight.price.business + 5000) %> MAD</p>
                     <p class="text-green-500 font-semibold mb-4"><i class="fas fa-leaf"></i> +<%= Math.round((flight.greenPoints || 0) * 1.5) %> Points</p>
                     <div class="text-left space-y-3">
-                        <p><i class="fas fa-check-circle text-green-500"></i> Free change</p>
-                        <p><i class="fas fa-check-circle text-green-500"></i> Refundable</p>
-                        <p><i class="fas fa-suitcase-rolling"></i> 2 checked bags (32kg)</p>
-                        <p><i class="fas fa-lock"></i> Empty seat next to you</p>
-                        <p><i class="fas fa-bolt text-yellow-500"></i> Fast-track</p>
-                        <p><i class="fas fa-coffee"></i> Lounge access</p>
-                        <p><i class="fas fa-clock"></i> Take an earlier flight</p>
+                        <p><i class="fas fa-check-circle text-green-500"></i> Changement gratuit</p>
+                        <p><i class="fas fa-check-circle text-green-500"></i> Remboursable</p>
+                        <p><i class="fas fa-suitcase-rolling"></i> 2 bagages en soute (32kg)</p>
+                        <p><i class="fas fa-lock"></i> Siège voisin libre</p>
+                        <p><i class="fas fa-bolt text-yellow-500"></i> Accès prioritaire</p>
+                        <p><i class="fas fa-coffee"></i> Accès au salon</p>
+                        <p><i class="fas fa-clock"></i> Prendre un vol plus tôt</p>
                     </div>
-                    <form action="/<%= flight._id %>/book" method="POST" class="mt-auto pt-4">
+                    <form action="/flights/<%= flight._id %>/book" method="POST" class="mt-auto pt-4">
                         <input type="hidden" name="class" value="business">
-                        <button type="submit" class="select-button">Select</button>
+                        <button type="submit" class="select-button">Sélectionner</button>
                     </form>
                 </div>
             </div>
@@ -148,7 +152,7 @@
 </div>
 
 <% } else { %>
-<p class="text-center text-gray-500">Flight details could not be found.</p>
+<p class="text-center text-gray-500">Les détails du vol n'ont pas pu être trouvés.</p>
 <% } %>
 
 <style>

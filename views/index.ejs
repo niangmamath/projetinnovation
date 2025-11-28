@@ -1,86 +1,129 @@
 <%- include('partials/header') %>
 
-<div class="bg-gray-50">
+<div class="bg-gray-50 text-gray-800">
 
-    <!-- Hero Section -->
-    <div class="relative text-white" style="height: 60vh;">
-        <img src="https://images.unsplash.com/photo-1542362567-b07e54358753?q=80&w=2070&auto=format&fit=crop" alt="Winding road through a forest" class="absolute w-full h-full object-cover">
-        <div class="absolute inset-0 bg-black opacity-50"></div>
-        <div class="relative container mx-auto px-4 h-full flex flex-col justify-center items-center text-center">
-            <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">Travel Sustainably with <span class="text-green-400">Royal Air Maroc</span></h1>
-            <p class="text-lg md:text-xl text-gray-200 mb-8 max-w-2xl">Find the best flights, earn green points, and reduce your carbon footprint. Your journey to a greener planet starts here.</p>
-            <a href="/flights" class="bg-green-600 text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-green-700 transition-transform transform hover:scale-105">Book Your Flight Now</a>
+    <!-- 1. Hero Section -->
+    <section class="relative bg-cover bg-center text-white" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2070&auto=format&fit=crop'); height: 90vh;">
+        <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+        <div class="relative container mx-auto px-4 h-full flex flex-col justify-center">
+            <h1 class="text-5xl md:text-6xl font-extrabold leading-tight mb-4 max-w-2xl">Voyagez Mieux, Volez Plus Vert.</h1>
+            <p class="text-lg md:text-xl text-gray-200 mb-8 max-w-xl">Votre fidélité nous aide à investir dans un avenir plus durable pour le transport aérien.</p>
+            
+            <!-- Flight Search Form -->
+            <div class="bg-white bg-opacity-90 backdrop-blur-sm rounded-lg p-6 shadow-2xl max-w-4xl">
+                <form action="/flights" method="GET">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                        <div class="w-full">
+                            <label for="from" class="block text-sm font-medium text-gray-700">De</label>
+                            <input type="text" name="from" id="from" placeholder="Ville de départ" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 text-gray-900">
+                        </div>
+                        <div class="w-full">
+                            <label for="to" class="block text-sm font-medium text-gray-700">À</label>
+                            <input type="text" name="to" id="to" placeholder="Ville d'arrivée" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 text-gray-900">
+                        </div>
+                        <div class="w-full">
+                            <label for="departure_date" class="block text-sm font-medium text-gray-700">Date de départ</label>
+                            <input type="date" name="departure_date" id="departure_date" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 text-gray-900">
+                        </div>
+                        <button type="submit" class="w-full bg-green-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700 transition duration-300 transform hover:scale-105 flex items-center justify-center">
+                            <i class="fas fa-search mr-2"></i> Trouver un vol
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
+    </section>
 
-    <!-- Services Section -->
-    <section class="py-16 bg-white">
+    <!-- 2. "Pourquoi nous choisir ?" Section -->
+    <section class="py-20 bg-white">
         <div class="container mx-auto px-4 text-center">
-            <h2 class="text-3xl font-bold text-gray-800 mb-2">Our Services</h2>
-            <p class="text-gray-600 mb-12">Everything you need for a seamless and responsible travel experience.</p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-                <!-- Service 1: Flight Search -->
-                <div class="flex flex-col items-center">
-                    <div class="bg-green-100 text-green-600 rounded-full p-6 mb-4">
-                        <i class="fas fa-plane-departure fa-3x"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">Efficient Flight Search</h3>
-                    <p class="text-gray-600">Easily find and compare Royal Air Maroc flights. Our intuitive platform helps you book the perfect trip in minutes.</p>
+            <h2 class="text-3xl font-bold mb-4">Voyager avec nous, c'est choisir l'avenir</h2>
+            <p class="text-gray-600 mb-12 max-w-3xl mx-auto">Nous transformons chaque voyage en une expérience exceptionnelle, pour vous et pour la planète.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1: Engagement Écologique -->
+                <div class="bg-gray-50 p-8 rounded-lg shadow-sm hover:shadow-xl transition-shadow duration-300">
+                    <div class="text-green-500 mb-4"><i class="fas fa-leaf fa-3x"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Engagement Écologique</h3>
+                    <p class="text-gray-600">Nous investissons dans les carburants d'aviation durables (SAF) et récompensons vos choix éco-responsables avec notre programme de points verts.</p>
                 </div>
-                <!-- Service 2: Green Points -->
-                <div class="flex flex-col items-center">
-                    <div class="bg-blue-100 text-blue-600 rounded-full p-6 mb-4">
-                        <i class="fas fa-leaf fa-3x"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">Earn Green Points</h3>
-                    <p class="text-gray-600">Get rewarded for making sustainable choices. Earn points on every booking and unlock exclusive benefits and badges.</p>
+                <!-- Card 2: Service Exceptionnel -->
+                <div class="bg-gray-50 p-8 rounded-lg shadow-sm hover:shadow-xl transition-shadow duration-300">
+                    <div class="text-blue-500 mb-4"><i class="fas fa-concierge-bell fa-3x"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Service Exceptionnel</h3>
+                    <p class="text-gray-600">Votre confort est notre priorité. Profitez d'un service client primé, d'une assistance 24/7 et d'une expérience de voyage fluide et agréable.</p>
                 </div>
-                <!-- Service 3: Carbon Tracking -->
-                <div class="flex flex-col items-center">
-                    <div class="bg-yellow-100 text-yellow-600 rounded-full p-6 mb-4">
-                        <i class="fas fa-seedling fa-3x"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">Track Your Impact</h3>
-                    <p class="text-gray-600">Monitor the carbon footprint of your travels. We provide transparent data to help you make informed, eco-friendly decisions.</p>
+                <!-- Card 3: Fidélité Récompensée -->
+                <div class="bg-gray-50 p-8 rounded-lg shadow-sm hover:shadow-xl transition-shadow duration-300">
+                    <div class="text-yellow-500 mb-4"><i class="fas fa-gem fa-3x"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Fidélité Récompensée</h3>
+                    <p class="text-gray-600">Devenez un "Green Champion". Chaque vol vous rapproche de nouveaux avantages, de surclassements et de récompenses exclusives.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Featured Destinations Section -->
-    <section class="py-16 bg-gray-50">
+    <!-- 3. "Notre Promesse Verte" Section -->
+    <section class="py-20 bg-green-700 text-white">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-8 md:mb-0 md:pr-12 text-center md:text-left">
+                <h2 class="text-4xl font-bold mb-4">Notre Promesse Verte</h2>
+                <p class="text-lg text-green-200 mb-6">Nous sommes engagés à réduire notre empreinte carbone. Notre objectif est d'atteindre 10% de Carburant d'Aviation Durable (SAF) sur tous nos vols d'ici 2030. Votre choix de voler avec nous soutient directement cette transition.</p>
+                <a href="/sustainability" class="bg-white text-green-700 font-bold py-3 px-6 rounded-lg hover:bg-gray-200 transition duration-300">Découvrir nos actions</a>
+            </div>
+            <div class="md:w-1/2">
+                <img src="https://images.unsplash.com/photo-1593288942345-89681a2d5f69?q=80&w=1934&auto=format&fit=crop" alt="Green landscape with wind turbines" class="rounded-lg shadow-2xl">
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. "Témoignages Clients" Section -->
+    <section class="py-20 bg-white">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-gray-800 text-center mb-12">Explore Popular Destinations</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Destination 1: Marrakech -->
-                <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
-                    <img src="https://images.unsplash.com/photo-1559938539-a96b42385c70?q=80&w=1964&auto=format&fit=crop" alt="Marrakech" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold text-gray-800">Marrakech</h3>
+            <h2 class="text-3xl font-bold text-center mb-12">Ce que disent nos voyageurs satisfaits</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
+                    <p class="text-gray-600 mb-4 italic">"Le service client était incroyable. Ils ont résolu mon problème en quelques minutes. Et savoir que je contribue à une cause écologique rend le voyage encore meilleur !"</p>
+                    <div class="flex items-center">
+                        <img class="w-12 h-12 rounded-full mr-4" src="https://randomuser.me/api/portraits/women/68.jpg" alt="Avatar de Marie Dupont">
+                        <div>
+                            <p class="font-bold">Marie Dupont</p>
+                            <p class="text-sm text-gray-500">Voyageuse Fréquente</p>
+                        </div>
                     </div>
                 </div>
-                <!-- Destination 2: Casablanca -->
-                <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
-                    <img src="https://images.unsplash.com/photo-1552694436-d4f1f5dca3c6?q=80&w=1887&auto=format&fit=crop" alt="Casablanca" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold text-gray-800">Casablanca</h3>
+                <!-- Testimonial 2 -->
+                <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
+                    <p class="text-gray-600 mb-4 italic">"Le programme de fidélité Green Champions est très motivant. J'adore voir mes points augmenter et débloquer les badges. Une compagnie qui a tout compris !"</p>
+                    <div class="flex items-center">
+                        <img class="w-12 h-12 rounded-full mr-4" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Avatar de Ahmed El Fassi">
+                        <div>
+                            <p class="font-bold">Ahmed El Fassi</p>
+                            <p class="text-sm text-gray-500">Green Champion - Silver</p>
+                        </div>
                     </div>
                 </div>
-                <!-- Destination 3: Dakhla -->
-                <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
-                    <img src="https://images.unsplash.com/photo-1616152423989-d417983c2717?q=80&w=1887&auto=format&fit=crop" alt="Dakhla" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold text-gray-800">Dakhla</h3>
-                    </div>
-                </div>
-                <!-- Destination 4: Ifrane -->
-                <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
-                    <img src="https://images.unsplash.com/photo-1605822124036-a5b353a3c914?q=80&w=1935&auto=format&fit=crop" alt="Ifrane" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold text-gray-800">Ifrane</h3>
+                <!-- Testimonial 3 -->
+                <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
+                    <p class="text-gray-600 mb-4 italic">"Enfin une compagnie qui prend l'environnement au sérieux sans sacrifier le confort. Le vol était parfait, et l'équipage aux petits soins. Je recommande vivement."</p>
+                    <div class="flex items-center">
+                        <img class="w-12 h-12 rounded-full mr-4" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Avatar de Fatima Zahra">
+                        <div>
+                            <p class="font-bold">Fatima Zahra</p>
+                            <p class="text-sm text-gray-500">Première fois avec nous</p>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- 5. Appel à l'Action Final -->
+    <section class="py-20 bg-gray-100">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-4">Prêt à décoller ?</h2>
+            <p class="text-gray-600 mb-8 max-w-2xl mx-auto">Rejoignez des milliers de voyageurs qui choisissent un transport aérien plus intelligent et plus respectueux de la planète.</p>
+            <a href="/flights" class="bg-green-600 text-white font-bold py-4 px-10 rounded-lg hover:bg-green-700 transition duration-300 transform hover:scale-105 text-lg">Réservez votre prochain voyage</a>
         </div>
     </section>
 

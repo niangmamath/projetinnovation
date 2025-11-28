@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const methodOverride = require('method-override');
+const flash = require('connect-flash'); // To display messages
 
 const app = express();
 
@@ -35,10 +36,19 @@ app.use(
   })
 );
 
-// Make session available in templates
+// Flash Message Middleware
+app.use(flash());
+
+// Make session and flash messages available in all templates
 app.use((req, res, next) => {
   res.locals.userId = req.session.userId;
+  res.locals.messages = req.flash();
   next();
+});
+
+// --- New Sustainability Route ---
+app.get('/sustainability', (req, res) => {
+  res.render('sustainability');
 });
 
 // Routes
