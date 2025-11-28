@@ -2,8 +2,11 @@ const express = require('express');
 const router = express.Router();
 const flightController = require('../controllers/flightController');
 
-// Main route for displaying the search form and handling search queries
-router.get('/', flightController.searchFlights);
+// Main route for displaying the home page
+router.get('/', flightController.getHomePage);
+
+// Route to display all flights
+router.get('/flights', flightController.getAllFlights);
 
 // Route to display details for a specific flight
 router.get('/:id', flightController.getFlightDetails);

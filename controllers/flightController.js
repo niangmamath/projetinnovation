@@ -1,43 +1,35 @@
 const Flight = require('../models/Flight');
 const User = require('../models/User');
-const Booking = require('../models/Booking'); // Import the Booking model
+const Booking = require('../models/Booking');
 
-// --- Helper function for badge logic ---
+// --- Helper function to update user badge based on points ---
 const updateUserBadge = (user) => {
   const points = user.greenPoints;
-  let newBadge = 'Bronze'; // Default badge
-
-  if (points >= 3000) {
-    newBadge = 'Platinum';
-  } else if (points >= 1500) {
-    newBadge = 'Gold';
-  } else if (points >= 500) {
-    newBadge = 'Silver';
-  }
-
-  user.badge = newBadge;
+  if (points >= 3000) user.badge = 'Platinum';
+  else if (points >= 1500) user.badge = 'Gold';
+  else if (points >= 500) user.badge = 'Silver';
+  else user.badge = 'Bronze';
 };
 
+// --- Controller actions ---
 
-// Display flights (all or filtered) on the main page
-exports.searchFlights = async (req, res) => {
+exports.getHomePage = (req, res) => {
+  res.render('index', { userId: req.session.userId });
+};
+
+exports.getAllFlights = async (req, res) => {
   try {
     const { from, to, date } = req.query;
     const searchCriteria = {};
-
     if (from) searchCriteria.from = new RegExp(from, 'i');
     if (to) searchCriteria.to = new RegExp(to, 'i');
-
     const flights = await Flight.find(searchCriteria);
-    res.render('index', { flights: flights, userId: req.session.userId });
+    res.render('flights', { flights: flights, userId: req.session.userId });
   } catch (error) {
-    console.error('Error fetching or searching flights:', error);
-    res.status(500).send('Error loading the page');
+    res.status(500).send('Error loading flights');
   }
 };
 
-
-// Get and display details for a single flight
 exports.getFlightDetails = async (req, res) => {
   try {
     const flight = await Flight.findById(req.params.id);
@@ -47,49 +39,55 @@ exports.getFlightDetails = async (req, res) => {
   }
 };
 
-
-// Book a flight for the logged-in user
 exports.bookFlight = async (req, res) => {
-  // 1. Check if user is logged in
   if (!req.session.userId) {
     return res.redirect('/users/login');
   }
 
   try {
-    // 2. Verify the user and flight exist
     const user = await User.findById(req.session.userId);
     const flight = await Flight.findById(req.params.id);
 
     if (!user || !flight) {
-        // If user or flight is not found, handle appropriately
-        req.session.destroy(); // Security measure
-        return res.redirect('/users/login');
+      return res.status(404).send('User or Flight not found.');
     }
 
-    const { seatClass, pointsMultiplier } = req.body;
-
-    if (!seatClass || !['economy', 'business'].includes(seatClass)) {
+    const { class: selectedClass } = req.body;
+    if (!selectedClass || !['economy', 'business', 'economy_flex'].includes(selectedClass)) {
       return res.status(400).send('Invalid class selection.');
     }
 
+    // *** LOGIC IMPROVEMENT ***
+    // 1. Define multipliers centrally
+    const multipliers = { economy: 1, economy_flex: 1.2, business: 1.5 };
+    const multiplier = multipliers[selectedClass];
+
+    // 2. Calculate the exact points for this booking
+    const pointsAwarded = Math.round((flight.greenPoints || 0) * multiplier);
+
+    // 3. Create the booking with the exact points earned stored
     const newBooking = new Booking({
       user: user._id,
       flight: flight._id,
-      seatClass: seatClass
+      class: selectedClass,
+      pointsEarned: pointsAwarded // Storing the calculated points
     });
-    await newBooking.save();
-
-    // 3. Award Green Points based on multiplier and update badge
-    const multiplier = parseFloat(pointsMultiplier) || 1;
-    const pointsToAward = Math.round(flight.greenPoints * multiplier);
     
-    user.greenPoints += pointsToAward;
+    // 4. Update user's total points
+    user.greenPoints += pointsAwarded;
     updateUserBadge(user);
-    await user.save();
+
+    // 5. Save both documents concurrently for better performance
+    await Promise.all([newBooking.save(), user.save()]);
 
     res.redirect('/users/dashboard');
 
   } catch (error) {
+    // Handle potential duplicate booking error
+    if (error.code === 11000) {
+        // You can add a specific user-friendly message here
+        return res.status(409).send('You have already booked this flight in the selected class.');
+    }
     console.error('Booking Error:', error);
     res.status(500).send('An error occurred while booking the flight.');
   }

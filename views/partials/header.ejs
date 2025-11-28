@@ -3,24 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GreenFlight</title>
+  <title>GreenFlight - Fly with Royal Air Maroc</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
-<body class="bg-gray-100 text-gray-800">
-  <div class="container mx-auto p-4">
-    <header class="bg-white shadow-md rounded-lg p-6 mb-8 flex justify-between items-center">
-      <a href="/"><h1 class="text-3xl font-bold text-green-600">GreenFlight</h1></a>
-      <nav>
-        <!-- Leaderboard link is always visible -->
-        <a href="/users/leaderboard" class="text-green-600 font-semibold hover:underline ml-4">Green Champions</a>
 
+<body class="bg-gray-50 text-gray-800">
+
+  <header class="bg-white shadow-md" x-data="{ open: false }">
+    <nav class="container mx-auto px-6 py-4">
+      <div class="flex justify-between items-center">
+        <a href="/" class="text-2xl font-bold text-green-600">GreenFlight</a>
+
+        <!-- Hamburger Menu for Mobile -->
+        <div class="md:hidden">
+          <button @click="open = !open" class="text-gray-600 focus:outline-none">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex items-center space-x-6">
+          <a href="/" class="text-gray-600 hover:text-green-600 font-medium">Home</a>
+          <a href="/flights" class="text-gray-600 hover:text-green-600 font-medium">Flights</a>
+          <a href="/users/leaderboard" class="text-gray-600 hover:text-green-600 font-medium">Leaderboard</a>
+
+          <% if (userId) { %>
+            <a href="/users/dashboard" class="bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700">My Dashboard</a>
+            <a href="/users/logout" class="text-gray-600 hover:text-green-600 font-medium">Logout</a>
+          <% } else { %>
+            <a href="/users/login" class="text-gray-600 hover:text-green-600 font-medium">Login</a>
+            <a href="/users/register" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600">Register</a>
+          <% } %>
+        </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div x-show="open" @click.away="open = false" class="md:hidden mt-4 space-y-2">
+        <a href="/" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Home</a>
+        <a href="/flights" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Flights</a>
+        <a href="/users/leaderboard" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Leaderboard</a>
+        <hr>
         <% if (userId) { %>
-          <a href="/users/dashboard" class="text-blue-500 hover:underline ml-4">Dashboard</a>
-          <a href="/users/logout" class="text-blue-500 hover:underline ml-4">Logout</a>
+          <a href="/users/dashboard" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">My Dashboard</a>
+          <a href="/users/logout" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Logout</a>
         <% } else { %>
-          <a href="/users/login" class="text-blue-500 hover:underline ml-4">Login</a>
-          <a href="/users/register" class="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 ml-4">Register</a>
+          <a href="/users/login" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Login</a>
+          <a href="/users/register" class="block px-4 py-2 bg-blue-500 text-white font-bold rounded hover:bg-blue-600">Register</a>
         <% } %>
-      </nav>
-    </header>
-    <main>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container mx-auto p-4">

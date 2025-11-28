@@ -1,26 +1,36 @@
 const mongoose = require('mongoose');
 
 const bookingSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  flight: { type: mongoose.Schema.Types.ObjectId, ref: 'Flight' },
-  
-  seatClass: { 
-    type: String, 
-    required: true, 
-    enum: ['economy', 'business'] 
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
   },
-
-  options: {
-    bagageLight: { type: Boolean, default: false },
-    vegetarianMeal: { type: Boolean, default: false },
-    compensation: { type: Boolean, default: false },
+  flight: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Flight',
+    required: true,
   },
-  earnedGreenMiles: Number,
-  createdAt: { type: Date, default: Date.now },
+  bookingDate: {
+    type: Date,
+    default: Date.now,
+  },
+  // This field is crucial to fix the points deduction bug.
+  // It stores the actual number of points awarded for this specific booking,
+  // including any class multipliers.
+  pointsEarned: {
+    type: Number,
+    required: true,
+    default: 0 // Defaulting to 0 for safety with any old data.
+  },
+  class: {
+      type: String,
+      required: true,
+      enum: ['economy', 'business', 'economy_flex']
+  }
 });
 
-// CORRECTED: The pre-save hook for populate is not needed and was causing the error.
-// Mongoose does not populate on save. Population is for queries (find, findOne, etc.).
-// We will remove this incorrect middleware.
+// A user should not be able to book the exact same flight in the same class more than once.
+bookingSchema.index({ user: 1, flight: 1, class: 1 }, { unique: true });
 
 module.exports = mongoose.model('Booking', bookingSchema);

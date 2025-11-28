@@ -3,7 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
-const methodOverride = require('method-override'); // Import method-override
+const methodOverride = require('method-override');
 
 const app = express();
 
@@ -30,7 +30,7 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false, // Set to false for better practice
+    saveUninitialized: false,
     store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
   })
 );
@@ -44,7 +44,7 @@ app.use((req, res, next) => {
 // Routes
 app.use('/', require('./routes/flights'));
 app.use('/users', require('./routes/users'));
-app.use('/bookings', require('./routes/bookings')); // Handle booking management
+app.use('/bookings', require('./routes/bookings'));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
