@@ -1,12 +1,14 @@
 {
   "name": "green-miles-airline",
   "version": "1.0.0",
-  "description": "A web application for an airline's ecological program.",
+  "description": "Prototype - Programme de Décarbonisation de Royal Air Maroc",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "dev": "kill-port 3000 && concurrently \"nodemon index.js\" \"npm:watch:css\"",
     "watch:css": "tailwindcss -i public/css/input.css -o public/css/styles.css --watch",
+    "build:css": "tailwindcss -i public/css/input.css -o public/css/styles.css",
+    "postinstall": "npm run build:css",
     "seed": "node seed.js"
   },
   "author": "",
