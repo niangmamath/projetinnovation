@@ -19,19 +19,31 @@
       Platine: `<svg class="h-24 w-24 text-emerald-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2.5a.75.75 0 00-.75.75v1.51a1 1 0 01-1.28.963L4.6 4.354a.75.75 0 00-.963 1.28l1.36 3.374a1 1 0 01-.964 1.28H2.75a.75.75 0 000 1.5h1.253a1 1 0 01.964 1.28L3.64 16.37a.75.75 0 00.963 1.28l3.373-1.36a1 1 0 011.28.963V18.25a.75.75 0 001.5 0v-1.51a1 1 0 011.28-.963l3.373 1.36a.75.75 0 00.963-1.28l-1.36-3.374a1 1 0 01.964-1.28H17.25a.75.75 0 000-1.5h-1.253a1 1 0 01-.964-1.28l1.36-3.374a.75.75 0 00-.963-1.28l-3.373 1.36a1 1 0 01-1.28-.963V3.25a.75.75 0 00-.75-.75z" clip-rule="evenodd" /></svg>`
     };
 
-    const currentBadge = user.badge || 'Bronze';
+    // --- ROBUST BADGE LOGIC ---
+    // 1. Safely get the user's badge, defaulting to 'Bronze'.
+    let userBadgeName = (user.badge && typeof user.badge === 'string') ? user.badge : 'Bronze';
+    // 2. Capitalize it to match the `badges` object keys (e.g., 'bronze' -> 'Bronze').
+    userBadgeName = userBadgeName.charAt(0).toUpperCase() + userBadgeName.slice(1).toLowerCase();
+    // 3. Find the badge info. If it's not a valid badge, fall back to Bronze.
+    const badgeInfo = badges[userBadgeName] || badges.Bronze;
+    // 4. Get the correct key name (e.g., 'Bronze') for the current badge to use with badgeIcons.
+    const currentBadgeKey = Object.keys(badges).find(key => badges[key] === badgeInfo) || 'Bronze';
+
     const currentPoints = user.greenPoints || 0;
-    const badgeInfo = badges[currentBadge];
     const nextBadgeName = badgeInfo.next;
     const nextBadge = nextBadgeName ? badges[nextBadgeName] : null;
 
     let progress = 0;
-    let pointsForNextLevel = 0;
-    let userProgress = 0;
+    let pointsNeeded = 0;
     if (nextBadge) {
-      pointsForNextLevel = nextBadge.threshold - badgeInfo.threshold;
-      userProgress = currentPoints - badgeInfo.threshold;
-      progress = Math.min((userProgress / pointsForNextLevel) * 100, 100);
+      const pointsForNextLevel = nextBadge.threshold - badgeInfo.threshold;
+      const userProgress = currentPoints - badgeInfo.threshold;
+      pointsNeeded = nextBadge.threshold - currentPoints;
+      if (pointsForNextLevel > 0) {
+        progress = Math.min((userProgress / pointsForNextLevel) * 100, 100);
+      }
+    } else {
+      progress = 100; // Platine members are at 100%
     }
   %>
   
@@ -40,11 +52,11 @@
     
     <div class="flex items-center justify-around">
       <div class="flex-shrink-0 animate-pulse">
-        <%- badgeIcons[currentBadge] %>
+        <%- badgeIcons[currentBadgeKey] %>
       </div>
       
       <div class="flex-grow ml-6 text-center">
-        <p class="text-xl font-semibold <%= badgeInfo.textColor %>">Membre <%= currentBadge %></p>
+        <p class="text-xl font-semibold <%= badgeInfo.textColor %>">Membre <%= currentBadgeKey %></p>
         <p class="text-4xl font-bold tracking-tight"><%= currentPoints.toLocaleString() %> <span class="text-lg font-light">Points</span></p>
         
         <% if (nextBadge) { %>
@@ -53,7 +65,11 @@
               <div class="bg-emerald-400 h-2.5 rounded-full" style="width: <%= progress %>%"></div>
             </div>
             <p class="text-sm text-gray-400 mt-2">
-              <%= (nextBadge.threshold - currentPoints).toLocaleString() %> points restants pour le statut <span class="font-bold <%= badges[nextBadgeName].textColor %>"><%= nextBadgeName %></span>
+              <% if (pointsNeeded > 0) { %>
+                <%= pointsNeeded.toLocaleString() %> points restants pour le statut <span class="font-bold <%= badges[nextBadgeName].textColor %>"><%= nextBadgeName %></span>
+              <% } else { %>
+                Félicitations ! Vous êtes prêt pour le statut <span class="font-bold <%= badges[nextBadgeName].textColor %>"><%= nextBadgeName %></span> !
+              <% } %>
             </p>
           </div>
         <% } else { %>

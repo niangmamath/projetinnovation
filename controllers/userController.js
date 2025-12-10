@@ -16,13 +16,19 @@ exports.getDashboard = async (req, res) => {
         return res.redirect('/users/login');
     }
 
+    // FIX: Ensure every user has a badge. If not, default to 'Bronze'.
+    // This prevents the 'cannot read property of undefined' error in the EJS template.
+    if (!user.badge) {
+      user.badge = 'Bronze';
+    }
+
     // 2. Fetch all bookings for that user and populate the flight details
     const bookings = await Booking.find({ user: user._id }).populate('flight');
 
     // 3. Render the dashboard, passing both the user object and their bookings
     res.render('dashboard', { 
       user: user, 
-      bookings: bookings, // Pass the separately fetched bookings
+      bookings: bookings, 
       userId: req.session.userId
     });
 
