@@ -2,9 +2,8 @@ const Flight = require('../models/Flight');
 const User = require('../models/User');
 const Booking = require('../models/Booking');
 const { calculateCarbonFootprint } = require('../utils/carbonCalculator');
-const { pointCalculation } = require('../carbonConfig'); // CORRECTED PATH
+const { pointCalculation } = require('../carbonConfig');
 
-// --- Helper function to update user badge based on points ---
 const updateUserBadge = (user) => {
   const points = user.greenPoints;
   if (points >= 1000) user.badge = 'Platinum';
@@ -12,8 +11,6 @@ const updateUserBadge = (user) => {
   else if (points >= 300) user.badge = 'Silver';
   else user.badge = 'Bronze';
 };
-
-// --- Controller actions ---
 
 exports.getHomePage = (req, res) => {
   res.render('index', { userId: req.session.userId });
@@ -39,7 +36,10 @@ exports.getFlightDetails = async (req, res) => {
         return res.status(404).send('Flight not found');
     }
 
-    // Calculate points for each class to display on the details page
+    // Fetch other flights for the sidebar (increased limit for scrolling)
+    const otherFlights = await Flight.find({ _id: { $ne: req.params.id } }).limit(15);
+
+    // Calculate points for each class
     const points = {};
     const classes = ['economy', 'economy_flex', 'business'];
     classes.forEach(flightClass => {
@@ -53,6 +53,7 @@ exports.getFlightDetails = async (req, res) => {
     res.render('details', { 
         flight, 
         points,
+        otherFlights,
         userId: req.session.userId, 
         messages: req.flash() 
     });
@@ -85,10 +86,9 @@ exports.bookFlight = async (req, res) => {
         return res.redirect(`/flights/${newFlight._id}`);
     }
 
-    // --- Carbon & Points Calculation (NEW LOGIC) ---
+    // Carbon & Points Calculation
     const carbonFootprint = calculateCarbonFootprint(newFlight, selectedClass);
     const multiplier = pointCalculation.safMultiplier[selectedClass];
-    // Ensure carbonFootprint is not zero to avoid division by zero errors
     const pointsForNewFlight = carbonFootprint > 0
       ? Math.round((pointCalculation.baseConstant / carbonFootprint) * multiplier)
       : 0;
@@ -96,53 +96,28 @@ exports.bookFlight = async (req, res) => {
     const carbonMessage = `Votre empreinte carbone pour ce vol est estimée à ${carbonFootprint} kg de CO2e.`;
     const pointsMessage = `Vous avez gagné ${pointsForNewFlight} points verts pour ce choix écologique!`;
 
-
-    // === TRANSACTIONAL FLIGHT CHANGE LOGIC ===
     if (req.session.changeBookingId) {
-        const oldBookingId = req.session.changeBookingId;
-        const oldBooking = await Booking.findById(oldBookingId);
-
+        const oldBooking = await Booking.findById(req.session.changeBookingId);
         if (!oldBooking || oldBooking.user.toString() !== user._id.toString()) {
             req.flash('error', 'La réservation que vous essayez de modifier est invalide.');
-            delete req.session.changeBookingId; // Clean up session
+            delete req.session.changeBookingId;
             return res.redirect('/users/dashboard');
         }
 
-        // Create the new booking first
-        const newBooking = new Booking({
-            user: user._id,
-            flight: newFlight._id,
-            class: selectedClass,
-            pointsEarned: pointsForNewFlight
-        });
-
-        // Adjust user points: subtract old, add new
+        const newBooking = new Booking({ user: user._id, flight: newFlight._id, class: selectedClass, pointsEarned: pointsForNewFlight });
         user.greenPoints = (user.greenPoints - oldBooking.pointsEarned) + pointsForNewFlight;
         if (user.greenPoints < 0) user.greenPoints = 0;
         updateUserBadge(user);
 
-        // Perform operations: delete old, save new, update user
-        await Promise.all([
-            oldBooking.deleteOne(),
-            newBooking.save(),
-            user.save()
-        ]);
+        await Promise.all([ oldBooking.deleteOne(), newBooking.save(), user.save() ]);
 
-        delete req.session.changeBookingId; // IMPORTANT: Clean up the session
+        delete req.session.changeBookingId;
         req.flash('success', 'Votre vol a été modifié avec succès!');
         req.flash('info', carbonMessage);
         req.flash('info', pointsMessage);
         res.redirect('/users/dashboard');
-
     } else {
-        // === STANDARD BOOKING LOGIC ===
-        const newBooking = new Booking({
-            user: user._id,
-            flight: newFlight._id,
-            class: selectedClass,
-            pointsEarned: pointsForNewFlight
-        });
-
+        const newBooking = new Booking({ user: user._id, flight: newFlight._id, class: selectedClass, pointsEarned: pointsForNewFlight });
         user.greenPoints += pointsForNewFlight;
         updateUserBadge(user);
 
