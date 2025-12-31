@@ -21,11 +21,21 @@
               <td class="py-3 px-4 border-b font-semibold text-gray-800"><%= user.username %></td>
               <td class="py-3 px-4 border-b text-center">
                 <% 
-                  const badges = { Bronze: '#cd7f32', Argent: '#c0c0c0', Or: '#ffd700', Platine: '#e5e4e2' };
+                  const badgeIcons = {
+                    Bronze:   { icon: 'fas fa-medal', color: '#cd7f32' },
+                    Silver:   { icon: 'fas fa-medal', color: '#c0c0c0' },
+                    Gold:     { icon: 'fas fa-medal', color: '#ffd700' },
+                    Platinum: { icon: 'fas fa-gem',   color: '#6EE7B7' }
+                  };
+                  const badgeInfo = badgeIcons[user.badge];
                 %>
-                <span class="font-semibold px-3 py-1 rounded-full text-sm" style="background-color:<%= badges[user.badge] || '#ffffff' %>;">
-                  <%= user.badge %>
-                </span>
+                <% if (badgeInfo) { %>
+                  <span title="<%= user.badge %>">
+                    <i class="<%= badgeInfo.icon %> fa-2x" style="color: <%= badgeInfo.color %>;"></i>
+                  </span>
+                <% } else { %>
+                  <span><%= user.badge %></span>
+                <% } %>
               </td>
               <td class="py-3 px-4 border-b text-right font-bold text-xl text-green-600"><%= user.greenPoints %></td>
             </tr>
