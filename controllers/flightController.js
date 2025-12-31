@@ -7,9 +7,9 @@ const { pointCalculation } = require('../carbonConfig'); // CORRECTED PATH
 // --- Helper function to update user badge based on points ---
 const updateUserBadge = (user) => {
   const points = user.greenPoints;
-  if (points >= 3000) user.badge = 'Platinum';
-  else if (points >= 1500) user.badge = 'Gold';
-  else if (points >= 500) user.badge = 'Silver';
+  if (points >= 1000) user.badge = 'Platinum';
+  else if (points >= 700) user.badge = 'Gold';
+  else if (points >= 300) user.badge = 'Silver';
   else user.badge = 'Bronze';
 };
 

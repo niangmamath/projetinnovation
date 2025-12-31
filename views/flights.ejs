@@ -1,27 +1,6 @@
 <%- include('partials/header') %>
 
 <div class="container mx-auto px-4 py-8">
-
-  <!-- Formulaire de Recherche -->
-  <div class="bg-white shadow-md rounded-lg p-8 max-w-lg mx-auto mb-12">
-    <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Trouvez Votre Vol Écologique</h2>
-    <form action="/flights" method="GET" class="space-y-4">
-      <div>
-        <label for="from" class="block font-bold mb-1 text-gray-600">De :</label>
-        <input type="text" id="from" name="from"  class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-green-500">
-      </div>
-      <div>
-        <label for="to" class="block font-bold mb-1 text-gray-600">À :</label>
-        <input type="text" id="to" name="to"  class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-green-500">
-      </div>
-      <div>
-        <label for="date" class="block font-bold mb-1 text-gray-600">Date :</label>
-        <input type="date" id="date" name="date" class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-green-500">
-      </div>
-      <button type="submit" class="w-full bg-green-600 text-white font-bold py-2 px-4 rounded hover:bg-green-700 transition-colors">Rechercher</button>
-    </form>
-  </div>
-
   <!-- Section des Vols Disponibles -->
   <div class="max-w-4xl mx-auto">
     <h3 class="text-3xl font-bold text-center text-gray-800 mb-8">Vols Disponibles</h3>
