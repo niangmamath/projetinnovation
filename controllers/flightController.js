@@ -1,6 +1,8 @@
 const Flight = require('../models/Flight');
 const User = require('../models/User');
 const Booking = require('../models/Booking');
+const { calculateCarbonFootprint } = require('../utils/carbonCalculator');
+const { pointCalculation } = require('../carbonConfig'); // CORRECTED PATH
 
 // --- Helper function to update user badge based on points ---
 const updateUserBadge = (user) => {
@@ -33,8 +35,30 @@ exports.getAllFlights = async (req, res) => {
 exports.getFlightDetails = async (req, res) => {
   try {
     const flight = await Flight.findById(req.params.id);
-    res.render('details', { flight, userId: req.session.userId, messages: req.flash() });
+    if (!flight) {
+        return res.status(404).send('Flight not found');
+    }
+
+    // Calculate points for each class to display on the details page
+    const points = {};
+    const classes = ['economy', 'economy_flex', 'business'];
+    classes.forEach(flightClass => {
+        const carbonFootprint = calculateCarbonFootprint(flight, flightClass);
+        const multiplier = pointCalculation.safMultiplier[flightClass];
+        points[flightClass] = carbonFootprint > 0
+            ? Math.round((pointCalculation.baseConstant / carbonFootprint) * multiplier)
+            : 0;
+    });
+
+    res.render('details', { 
+        flight, 
+        points,
+        userId: req.session.userId, 
+        messages: req.flash() 
+    });
+
   } catch (error) {
+    console.error('Error getting flight details:', error);
     res.status(500).send('Error getting flight details');
   }
 };
@@ -61,8 +85,17 @@ exports.bookFlight = async (req, res) => {
         return res.redirect(`/flights/${newFlight._id}`);
     }
 
-    const multipliers = { economy: 1, economy_flex: 1.2, business: 1.5 };
-    const pointsForNewFlight = Math.round((newFlight.greenPoints || 0) * multipliers[selectedClass]);
+    // --- Carbon & Points Calculation (NEW LOGIC) ---
+    const carbonFootprint = calculateCarbonFootprint(newFlight, selectedClass);
+    const multiplier = pointCalculation.safMultiplier[selectedClass];
+    // Ensure carbonFootprint is not zero to avoid division by zero errors
+    const pointsForNewFlight = carbonFootprint > 0
+      ? Math.round((pointCalculation.baseConstant / carbonFootprint) * multiplier)
+      : 0;
+
+    const carbonMessage = `Votre empreinte carbone pour ce vol est estimée à ${carbonFootprint} kg de CO2e.`;
+    const pointsMessage = `Vous avez gagné ${pointsForNewFlight} points verts pour ce choix écologique!`;
+
 
     // === TRANSACTIONAL FLIGHT CHANGE LOGIC ===
     if (req.session.changeBookingId) {
@@ -97,6 +130,8 @@ exports.bookFlight = async (req, res) => {
 
         delete req.session.changeBookingId; // IMPORTANT: Clean up the session
         req.flash('success', 'Votre vol a été modifié avec succès!');
+        req.flash('info', carbonMessage);
+        req.flash('info', pointsMessage);
         res.redirect('/users/dashboard');
 
     } else {
@@ -114,6 +149,8 @@ exports.bookFlight = async (req, res) => {
         await Promise.all([newBooking.save(), user.save()]);
 
         req.flash('success', 'Vol réservé avec succès!');
+        req.flash('info', carbonMessage);
+        req.flash('info', pointsMessage);
         res.redirect('/users/dashboard');
     }
 

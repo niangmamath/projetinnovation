@@ -41,6 +41,7 @@
         <!-- Right-aligned Desktop Menu -->
         <div class="hidden md:flex items-center space-x-4">
           <% if (typeof userId !== 'undefined' && userId) { %>
+            <a href="/users/carbon" class="text-green-600 hover:text-green-700 font-medium">Mon Empreinte Carbone</a>
             <a href="/users/leaderboard" class="bg-orange-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-orange-600">Classement</a>
             <a href="/users/dashboard" class="bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700">Mon Tableau de Bord</a>
             <a href="/users/logout" class="text-gray-600 hover:text-green-600 font-medium">Déconnexion</a>
@@ -60,6 +61,7 @@
         <% } %>
         <hr>
         <% if (typeof userId !== 'undefined' && userId) { %>
+          <a href="/users/carbon" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Mon Empreinte Carbone</a>
           <a href="/users/leaderboard" class="block px-4 py-2 bg-orange-500 text-white font-bold rounded hover:bg-orange-600 text-center">Classement</a>
           <a href="/users/dashboard" class="block px-4 py-2 bg-green-600 text-white font-bold rounded hover:bg-green-700 text-center">Mon Tableau de Bord</a>
           <a href="/users/logout" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded text-center">Déconnexion</a>

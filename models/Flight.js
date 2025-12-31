@@ -12,10 +12,12 @@ const flightSchema = new mongoose.Schema({
     economy: Number,
     business: Number
   },
-  carbon_emissions: Number, // Represents the ecological aspect
-  greenPoints: { // Added greenPoints field
+  // --- Fields for Carbon Footprint Calculation ---
+  distance: Number,       // Distance in km
+  aircraftType: String,   // e.g., 'Boeing 737-800'
+  greenPoints: {
     type: Number,
-    default: 100 // Default value if not specified
+    default: 100
   }
 });
 

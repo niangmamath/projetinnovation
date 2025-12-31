@@ -9,6 +9,7 @@ router.get('/login', (req, res) => res.render('login'));
 router.post('/login', authController.login);
 router.get('/logout', authController.logout);
 router.get('/dashboard', userController.getDashboard);
+router.get('/carbon', userController.getCarbonFootprintPage);
 
 // --- NEW: Route for the leaderboard ---
 router.get('/leaderboard', userController.getLeaderboard);

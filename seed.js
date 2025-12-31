@@ -2,7 +2,8 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const Flight = require('./models/Flight');
 
-// --- Royal Air Maroc Flight Data (in MAD) ---
+// --- Royal Air Maroc Flight Data ---
+// Added distance (in km) and aircraftType for carbon calculation
 const flightData = [
   {
     from: 'Casablanca, Morocco',
@@ -13,7 +14,9 @@ const flightData = [
     arrival_time: '13:30',
     duration: 8.5,
     price: { economy: 8500, business: 25000 },
-    carbon_emissions: 950,
+    distance: 5800, // Distance in km
+    aircraftType: 'Boeing 787-8',
+    greenPoints: 1200,
   },
   {
     from: 'Casablanca, Morocco',
@@ -24,7 +27,9 @@ const flightData = [
     arrival_time: '11:30',
     duration: 3,
     price: { economy: 3500, business: 7000 },
-    carbon_emissions: 300,
+    distance: 1900, // Distance in km
+    aircraftType: 'Boeing 737-800',
+    greenPoints: 400,
   },
   {
     from: 'Casablanca, Morocco',
@@ -35,7 +40,9 @@ const flightData = [
     arrival_time: '01:45',
     duration: 3.75,
     price: { economy: 4000, business: 8500 },
-    carbon_emissions: 450,
+    distance: 2300, // Distance in km
+    aircraftType: 'Boeing 737-800',
+    greenPoints: 500,
   },
   {
     from: 'Marrakech, Morocco',
@@ -46,7 +53,9 @@ const flightData = [
     arrival_time: '18:30',
     duration: 3.5,
     price: { economy: 2800, business: 6000 },
-    carbon_emissions: 320,
+    distance: 2200, // Distance in km
+    aircraftType: 'Boeing 737-800',
+    greenPoints: 450,
   },
   {
     from: 'Casablanca, Morocco',
@@ -57,7 +66,9 @@ const flightData = [
     arrival_time: '15:45',
     duration: 7.75,
     price: { economy: 9800, business: 28000 },
-    carbon_emissions: 900,
+    distance: 5600, // Distance in km
+    aircraftType: 'Boeing 787-8',
+    greenPoints: 1100,
   },
   {
     from: 'Rabat, Morocco',
@@ -68,7 +79,9 @@ const flightData = [
     arrival_time: '13:00',
     duration: 3,
     price: { economy: 2500, business: 5500 },
-    carbon_emissions: 280,
+    distance: 2200, // Distance in km
+    aircraftType: 'Boeing 737-800',
+    greenPoints: 350,
   },
 ];
 
