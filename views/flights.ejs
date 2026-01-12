@@ -23,7 +23,7 @@
               <% if (flight.price && flight.price.economy) { %>
                 <p class="text-2xl font-bold text-green-600 mb-1"><%= flight.price.economy %> MAD</p>
               <% } %>
-              <p class="text-sm text-gray-600 font-medium"><%= flight.carbon_emissions %> kg CO₂</p>
+              
               <a href="/flights/<%= flight._id %>" class="mt-3 inline-block bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors">Voir les Détails</a>
             </div>
           </div>

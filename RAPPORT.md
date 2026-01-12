@@ -56,6 +56,18 @@ Pour répondre à cette problématique, notre projet met en œuvre un écosystè
     *   Le **`MultiplicateurSAF`** est un levier stratégique pour rendre les tarifs contributifs plus attractifs. Il récompense directement l'effort financier du client.
     *   Cette formule crée une **incitation économique claire et directe** à choisir non seulement les vols les plus efficaces, mais aussi les tarifs qui soutiennent activement la transition énergétique.
 
+### Références Méthodologiques
+
+La méthodologie de calcul de l'empreinte carbone adoptée dans ce projet, bien que simplifiée pour une application directe, s'inspire des principes et des normes établis par les organismes de référence suivants :
+
+*   **Organisation de l'Aviation Civile Internationale (OACI/ICAO) :** L'OACI fournit les méthodologies fondamentales pour estimer la consommation de carburant en fonction du type d'appareil et de la distance de vol. Notre utilisation d'un facteur de consommation de carburant (`FuelConsumption`) est alignée avec cette approche.
+
+*   **Groupe d'experts intergouvernemental sur l'évolution du climat (GIEC) :** Le GIEC est la source de référence pour les facteurs d'émission (`CO2Factor`), qui permettent de convertir une quantité de kérosène brûlé en quantité de CO2 émise. De plus, le concept de forçage radiatif (`RadiativeFactor`), qui prend en compte les effets réchauffants autres que le CO2 (comme les traînées de condensation et les oxydes d'azote), est un principe mis en avant par le GIEC pour une évaluation plus complète de l'impact climatique de l'aviation.
+
+*   **Department for Environment, Food & Rural Affairs (DEFRA) du Royaume-Uni & ADEME (France) :** Ces agences gouvernementales publient des facteurs de conversion détaillés et régulièrement mis à jour. Elles fournissent également des standards pour la pondération des émissions en fonction des classes de voyage (économique, affaires, première), reconnaissant que les sièges des classes supérieures occupent plus d'espace et sont donc responsables d'une part plus importante des émissions totales. Notre `PondérationDeSaClasse` est une application de ce principe.
+
+En nous appuyant sur ces références, nous nous assurons que notre calculateur, bien que simplifié pour l'expérience utilisateur, repose sur des fondements scientifiques et des pratiques reconnues internationalement.
+
 3.  **Tarifs Éco-responsables avec Contribution SAF**
     Nous avons introduit des classes tarifaires spécifiques, comme "Économique Flex", qui incluent une contribution au financement des Carburants d'Aviation Durables (SAF).
 
